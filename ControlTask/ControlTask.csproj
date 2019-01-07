@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <Reference Include="EOpt">
-      <HintPath>..\..\EOptLib\EOpt.dll</HintPath>
+      <HintPath>..\EOptLib\EOpt.dll</HintPath>
     </Reference>
   </ItemGroup>
 

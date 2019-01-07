@@ -1,0 +1,325 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Ndomsort</name>
+    </assembly>
+    <members>
+        <member name="T:Nds.Extensions.SeqIComparableExtensions">
+            <summary>
+            Extensions for the <see cref="T:System.Collections.Generic.IEnumerable`1"/>. 
+            </summary>
+        </member>
+        <member name="M:Nds.Extensions.SeqIComparableExtensions.CmpSeqEqual``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0},System.Comparison{``0})">
+            <summary>
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="Seq"></param>
+            <param name="OtherSeq"></param>
+            <param name="Cmp"></param>
+            <returns>
+            <para>
+            true, if <paramref name="Seq"/> and <paramref name="OtherSeq"/> are empty or they have
+            equal size and their elements are equal, otherwise false.
+            </para>
+            </returns>
+        </member>
+        <member name="M:Nds.Extensions.SeqIComparableExtensions.MinMax``1(System.Collections.Generic.IEnumerable{``0},``0@,``0@,System.Comparison{``0})">
+            <summary>
+            Find a minimum and maximum value in the <see cref="T:System.Collections.Generic.IEnumerable`1"/>. 
+            </summary>
+            <param name="Seq"></param>
+            <param name="Cmp"> <see cref="T:System.Comparison`1"/>. </param>
+            <param name="MinValue"> A minimum value of the <paramref name="Seq"/>. </param>
+            <param name="MaxValue"> A maximum value of the <paramref name="Seq"/>. </param>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="Seq"/> is null or empty.
+            </exception>
+        </member>
+        <member name="T:Nds.Ndsort`1">
+            <summary>
+            Non-dominated sorting. 
+            </summary>
+            <remarks>
+            Original algorithm described in the paper: Buzdalov M., Shalyto A. A Provably Asymptotically
+            Fast Version of the Generalized Jensen Algorithm for Non-dominated Sorting // Parallel
+            Problem Solving from Nature XIII.- 2015. - P. 528-537. - (Lecture Notes on Computer Science ; 8672)
+            </remarks>
+        </member>
+        <member name="M:Nds.Ndsort`1.MergeLists(System.Collections.Generic.LinkedList{System.Int32},System.Collections.Generic.LinkedList{System.Int32})">
+            <summary>
+            Merge the two list of the indices. Each list must be sorted. 
+            </summary>
+            <param name="indices1"> A sorted list of the indices. </param>
+            <param name="indices2"> A sorted list of the indices. </param>
+            <returns> The ordered list of indices. </returns>
+        </member>
+        <member name="M:Nds.Ndsort`1.NdHelperA(System.Collections.Generic.IReadOnlyList{`0}[],System.Int32[],System.Collections.Generic.LinkedList{System.Int32},System.Int32)">
+            <summary>
+            Recursive procedure. It attributes front's indices to all elements in the
+            <paramref name="SeqUniqObjs"/>, with the indices in the <paramref name="Indices"/>, for
+            the first <paramref name="CountOfObjs"/> values of the objectives.
+            </summary>
+            to all elements in the 
+            <paramref name="SeqUniqObjs"/>
+            <param name="SeqUniqObjs"> The sequence of the unique objectives. </param>
+            <param name="Fronts"> The values of the fronts. </param>
+            <param name="Indices"> The indices of the <paramref name="SeqUniqObjs"/>. </param>
+            <param name="CountOfObjs">
+            The number of the values from the objectives, for the sorting.
+            </param>
+        </member>
+        <member name="M:Nds.Ndsort`1.NdHelperB(System.Collections.Generic.IReadOnlyList{`0}[],System.Int32[],System.Collections.Generic.LinkedList{System.Int32},System.Collections.Generic.LinkedList{System.Int32},System.Int32)">
+            <summary>
+            Recursive procedure. It attributes a front's index to all elements in the
+            <paramref name="SeqUniqObjs"/>, with the indices in the <paramref name="AssignIndices"/>,
+            for the first for the first <paramref name="CountOfObjs"/> values of the objectives, by
+            comparing them to elements in the <paramref name="SeqUniqObjs"/>, with the indices in the <paramref name="CompIndices"/>.
+            </summary>
+            <param name="SeqUniqObjs"> The sequence of the unique objectives. </param>
+            <param name="Fronts"> The values of the fronts. </param>
+            <param name="CompIndices"> The indices for comparing. </param>
+            <param name="AssignIndices"> The indices for assign front. </param>
+            <param name="CountOfObjs">
+            The number of the values from the objectives, for the sorting.
+            </param>
+        </member>
+        <member name="M:Nds.Ndsort`1.NonDominSortObj(System.Collections.Generic.IEnumerable{System.Collections.Generic.IReadOnlyList{`0}})">
+            <summary>
+            Non-dominated sorting. 
+            </summary>
+            <param name="SeqObjs"> The sequence of the values of the objectives. </param>
+            <returns> The indices of the fronts. </returns>
+            <exception cref="T:System.ArgumentNullException">
+            <para> If <paramref name="SeqObjs"/> is null. </para>
+            <para> If <paramref name="SeqObjs"/> contains null. </para>
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            <para> If <paramref name="SeqObjs"/> is empty. </para>
+            <para> If the number of the objectives is less than 2. </para>
+            <para>
+            If the elements in the <paramref name="SeqObjs"/> have not an equal number of the objective.
+            </para>
+            </exception>
+        </member>
+        <member name="M:Nds.Ndsort`1.SplitBy(System.Collections.Generic.IReadOnlyList{`0}[],System.Collections.Generic.LinkedList{System.Int32},`0,System.Int32,System.Collections.Generic.LinkedList{System.Int32}@,System.Collections.Generic.LinkedList{System.Int32}@,System.Collections.Generic.LinkedList{System.Int32}@)">
+            <summary>
+            <paramref name="Indices"/> splits into three lists. 
+            </summary>
+            <param name="SeqUniqObjs"> The sequence of the unique objectives. </param>
+            <param name="Indices"> The indices of the <paramref name="SeqUniqObjs"/>. </param>
+            <param name="SplitValue"> A value for the splitting. </param>
+            <param name="IndexOfValue"> The index of the value in the objectives, for the split. </param>
+            <param name="LessSplitValue">
+            The indices, where the <paramref name="IndexOfValue"/> th value of the objectives is less
+            than <paramref name="SplitValue"/>.
+            </param>
+            <param name="EqualSplitValue">
+            The indices, where the <paramref name="IndexOfValue"/> th value of the objectives are
+            equal to <paramref name="SplitValue"/>.
+            </param>
+            <param name="GreaterSplitValue">
+            The indices, where the <paramref name="IndexOfValue"/> th value of the objectives is
+            greater than <paramref name="SplitValue"/>.
+            </param>
+        </member>
+        <member name="M:Nds.Ndsort`1.SweepA(System.Collections.Generic.IReadOnlyList{`0}[],System.Int32[],System.Collections.Generic.LinkedList{System.Int32})">
+            <summary>
+            Two-objective sorting. It attributes front's index to the lexicographically ordered
+            elements in the <paramref name="SeqUniqObjs"/>, with the indices in the
+            <paramref name="Indices"/>, based on the first two values of the objectives using a
+            line-sweep algorithm.
+            </summary>
+            <param name="SeqUniqObjs"> The sequence of the unique objectives. </param>
+            <param name="Fronts"> The values of the fronts. </param>
+            <param name="Indices"> The indices of the <paramref name="SeqUniqObjs"/>. </param>
+        </member>
+        <member name="M:Nds.Ndsort`1.SweepB(System.Collections.Generic.IReadOnlyList{`0}[],System.Int32[],System.Collections.Generic.LinkedList{System.Int32},System.Collections.Generic.LinkedList{System.Int32})">
+            <summary>
+            Two-objective sorting. It attributes front's index to elements in the
+            <paramref name="SeqUniqObjs"/>, with the indices in the <paramref name="AssignIndices"/>,
+            based on the first two values of the objectives, by comparing them to elements in the
+            <paramref name="SeqUniqObjs"/>, with the indices in the <paramref name="CompIndices"/>,
+            using a line-sweep algorithm.
+            </summary>
+            <param name="SeqUniqObjs"> The sequence of the unique objectives. </param>
+            <param name="Fronts"> The values of the fronts. </param>
+            <param name="CompIndices"> The indices for comparing. </param>
+            <param name="AssignIndices"> The indices for assign front. </param>
+        </member>
+        <member name="T:Nds.Ndsort`1.LexicographicCmp`1">
+            <summary>
+            Class for the lexicographical compare. 
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Nds.Ndsort`1.LexicographicCmp`1.Compare(System.Collections.Generic.IReadOnlyList{`1},System.Collections.Generic.IReadOnlyList{`1})">
+            <summary>
+            <para>
+            Compare <paramref name="LeftSeq"/> and <paramref name="RightSeq"/> in the
+            lexicographical order.
+            </para>
+            <para>
+            <paramref name="LeftSeq"/> is lexicographically less than
+            <paramref name="RightSeq"/>, if and only if <paramref name="LeftSeq"/>[i] &lt;
+            <paramref name="RightSeq"/>[i], for first i in {0,1,...,len(
+            <paramref name="LeftSeq"/>)-1}, where <paramref name="LeftSeq"/>[i] != <paramref name="RightSeq"/>[i].
+            </para>
+            <para>
+            <paramref name="LeftSeq"/> is equal to <paramref name="RightSeq"/>, if and only if
+            <paramref name="LeftSeq"/>[i] == <paramref name="RightSeq"/>[i], for all i in
+            {0,1,...,len( <paramref name="LeftSeq"/>)-1}.
+            </para>
+            <para>
+            In other cases, <paramref name="LeftSeq"/> is lexicographically greater than <paramref name="RightSeq"/>.
+            </para>
+            </summary>
+            <remarks>
+            <para>
+            <paramref name="LeftSeq"/> and <paramref name="RightSeq"/> must have the same lengths.
+            </para>
+            </remarks>
+            <param name="LeftSeq"></param>
+            <param name="RightSeq"></param>
+            <returns>
+            -1, if <paramref name="LeftSeq"/> is lexicographically less than <paramref name="RightSeq"/>.
+            0, if <paramref name="LeftSeq"/> is equal to <paramref name="RightSeq"/>,. 1, otherwise.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="LeftSeq"/> or <paramref name="RightSeq"/> is null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            <para>
+            If <paramref name="LeftSeq"/> and <paramref name="RightSeq"/> have no the same length.
+            </para>
+            <para> If <paramref name="LeftSeq"/> and <paramref name="RightSeq"/> are empty. </para>
+            </exception>
+        </member>
+        <member name="M:Nds.Ndsort`1.#ctor(System.Comparison{`0})">
+            <summary>
+            Create instance of the non-dominated sorting. 
+            </summary>
+            <param name="Cmp"> Defines totally order between any values in the objectives. </param>
+            <exception cref="T:System.ArgumentNullException"> If <paramref name="Cmp"/> is null. </exception>
+        </member>
+        <member name="M:Nds.Ndsort`1.NonDominSort(System.Collections.Generic.IEnumerable{System.Collections.Generic.IReadOnlyList{`0}})">
+            <summary>
+            Non-dominated sorting. 
+            </summary>
+            <param name="SeqObjs"> The sequence of the values of the objectives. </param>
+            <returns> The indices of the fronts. </returns>
+            <exception cref="T:System.ArgumentNullException">
+            <para> If <paramref name="SeqObjs"/> is null. </para>
+            <para> If <paramref name="SeqObjs"/> contains null. </para>
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            <para> If <paramref name="SeqObjs"/> is empty. </para>
+            <para> If the number of the objectives is less than 2. </para>
+            <para>
+            If the elements in the <paramref name="SeqObjs"/> have not an equal number of the objective.
+            </para>
+            </exception>
+        </member>
+        <member name="M:Nds.Ndsort`1.NonDominSort``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Collections.Generic.IReadOnlyList{`0}})">
+            <summary>
+            Non-dominated sorting. 
+            </summary>
+            <typeparam name="TDecision"> A type of the decision. </typeparam>
+            <param name="SeqDecisions"> The sequence of the decisions. </param>
+            <param name="GetObjs">
+            The function which maps a decision space into a objectives space.
+            </param>
+            <returns> The indices of the fronts. </returns>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="SeqDecisions"/> or <paramref name="GetObjs"/> is null.
+            </exception>
+            <exception cref="T:System.ArgumentException"> See correspond exception in the <see cref="M:Nds.Ndsort`1.NonDominSort(System.Collections.Generic.IEnumerable{System.Collections.Generic.IReadOnlyList{`0}})"/>. </exception>
+        </member>
+        <member name="M:Nds.ConverterResCmp.ConvertToResCmp(System.Int32)">
+            <summary>
+            Convert <paramref name="ResultCmp"/> to the <see cref="T:Nds.ResComp"/>. 
+            </summary>
+            <param name="ResultCmp"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Nds.ResComp">
+            <summary>
+            <para> The result of the comparison. </para>
+            <list type="bullet">
+            <listheader>
+            <term> Description </term>
+            </listheader>
+            <item>
+            <term> <see cref="F:Nds.ResComp.LE"/> </term>
+            <description> Less. </description>
+            </item>
+            <item>
+            <term> <see cref="F:Nds.ResComp.EQ"/> </term>
+            <description> Equal. </description>
+            </item>
+            <item>
+            <term> <see cref="F:Nds.ResComp.GR"/> </term>
+            <description> Greater. </description>
+            </item>
+            </list>
+            </summary>
+        </member>
+        <member name="T:Nds.Tools.Stools">
+            <summary>
+            The additional methods for the <see cref="T:Nds.Ndsort`1"/>. 
+            </summary>
+        </member>
+        <member name="M:Nds.Tools.Stools.Swap``1(``0@,``0@)">
+            <summary>
+            Swap the elements <paramref name="item1"/> and <paramref name="item2"/>. 
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="item1"> The first element. </param>
+            <param name="item2"> The second element. </param>
+        </member>
+        <member name="M:Nds.Tools.Stools.FindLowMedian``1(System.Collections.Generic.IReadOnlyCollection{``0},System.Comparison{``0})">
+            <summary>
+            Find median of sequence, if length of sequence is odd, otherwise the sequence has two
+            median. The median is the smallest value from them.
+            </summary>
+            <remarks> Time complexity is O(n), where n is length of the <paramref name="Seq"/>. </remarks>
+            <typeparam name="T"></typeparam>
+            <param name="Seq"></param>
+            <param name="Cmp"> <see cref="T:System.Collections.Generic.Comparer`1"/> </param>
+            <returns>
+            The "median" (a shallow copy, if <typeparamref name="T"/> is reference type) of sequence.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+            If the length of <paramref name="Seq"/> is 0.
+            </exception>
+            <exception cref="T:System.ArgumentNullException"> If <paramref name="Seq"/> is null. </exception>
+        </member>
+        <member name="M:Nds.Tools.Stools.IsDominate``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0},System.Comparison{``0})">
+            <summary>
+            <para> Check. Does a <paramref name="LeftVec"/> dominate a <paramref name="RightVec"/>? </para>
+            <para>
+            A <paramref name="LeftVec"/> dominates a <paramref name="RightVec"/>, if and only if
+            <paramref name="LeftVec"/>[i] &lt;= <paramref name="RightVec"/>[i], for all i in
+            {0,1,..., len( <paramref name="LeftVec"/>) - 1}, and there exists j in {0,1,...,len(
+            <paramref name="LeftVec"/>) - 1}: <paramref name="LeftVec"/>[j] &lt; <paramref name="RightVec"/>[j].
+            </para>
+            </summary>
+            <remarks>
+            If <paramref name="LeftVec"/> and <paramref name="RightVec"/> have the length is 0, then
+            the result is false.
+            </remarks>
+            <typeparam name="T"></typeparam>
+            <param name="LeftVec"> A first vector of the values. </param>
+            <param name="RightVec"> A second vector of the values. </param>
+            <param name="Cmp"> <see cref="T:System.Comparison`1"/> </param>
+            <returns>
+            True, if <paramref name="LeftVec"/> dominates a <paramref name="RightVec"/>, otherwise False.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+            If <paramref name="LeftVec"/> and <paramref name="RightVec"/> have different lengths.
+            </exception>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="LeftVec"/> or <paramref name="RightVec"/> is null.
+            </exception>
+        </member>
+    </members>
+</doc>

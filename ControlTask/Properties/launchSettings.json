@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ControlTask": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\ALEX K\\Desktop\\Master_task\\ControlTask\\ControlTask\\bin\\Debug\\netcoreapp2.1\\Res\""
+    }
+  }
+}

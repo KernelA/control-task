@@ -1,0 +1,1702 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>EOpt</name>
+    </assembly>
+    <members>
+        <member name="T:EOpt.Exceptions.InvalidValueFunctionException">
+            <summary>
+            The exception presents an invalid value of the function. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Exceptions.InvalidValueFunctionException.AtPoint">
+            <summary>
+            Get a point, where function has an invalid value. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Exceptions.InvalidValueFunctionException.#ctor(System.String,EOpt.Math.PointND)">
+            <summary>
+            The exception that is thrown for errors in a calculation of function. 
+            </summary>
+            <param name="Message"> A message of exception. </param>
+            <param name="Point"> A point, where function has an invalid value. </param>
+            <exception cref="T:System.ArgumentNullException"> If <paramref name="Point"/> is null. </exception>
+        </member>
+        <member name="M:EOpt.Exceptions.InvalidValueFunctionException.#ctor(System.String,EOpt.Math.PointND,System.Exception)">
+            <summary>
+            The exception that is thrown for errors in a calculation of function. 
+            </summary>
+            <param name="Message"> A message of exception. </param>
+            <param name="Point"> A point, where function has an invalid value. </param>
+            <param name="Inner"> An inner exception. </param>
+            <exception cref="T:System.ArgumentNullException"> If <paramref name="Point"/> is null. </exception>
+        </member>
+        <member name="T:EOpt.Help.Progress">
+            <summary>
+            Information about progress of computation. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Help.Progress.Current">
+            <summary>
+            A current value of progress. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Help.Progress.End">
+            <summary>
+            An end value of progress. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Help.Progress.OptimizationMethod">
+            <summary>
+            Method of optimization. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Help.Progress.Start">
+            <summary>
+            An initial value of progress. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Help.Progress.#ctor(System.Object,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            </summary>
+            <param name="OptimizationMethod"> Method of optimization. </param>
+            <param name="Start">              An initial value of progress. </param>
+            <param name="End">                An end value of progress. </param>
+            <param name="Current">            A current value of progress. </param>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="OptimizationMethod"/> is null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            If <paramref name="Current"/> &lt; <paramref name="Start"/> or gt; <paramref name="End"/>.
+            </exception>
+        </member>
+        <member name="M:EOpt.Math.CheckDouble.GetTypeValue(System.Double)">
+            <summary>
+            Get type  value of the <paramref name="Value"/>. 
+            </summary>
+            <param name="Value"></param>
+            <returns>
+            <see cref="F:EOpt.Math.DoubleTypeValue.NaN"/> if <paramref name="Value"/> is NaN.
+            <see cref="F:EOpt.Math.DoubleTypeValue.PosInf"/> if <paramref name="Value"/> is PositiveInfinity.
+            <see cref="F:EOpt.Math.DoubleTypeValue.NegInf"/> if <paramref name="Value"/> is NegativeInfinity.
+            Otherwise, <see cref="F:EOpt.Math.DoubleTypeValue.Valid"/>.
+            </returns>
+        </member>
+        <member name="T:EOpt.Math.ClampDouble">
+            <summary>
+            Clipping methods. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.ClampDouble.Clamp(System.Double,System.Double,System.Double)">
+            <summary>
+            If <paramref name="Value"/> out of range [ <paramref name="MinValue"/>;
+            <paramref name="MaxValue"/>], then clipping to the boundary.
+            </summary>
+            <param name="Value">   </param>
+            <param name="MinValue"> A minimum value of the range. </param>
+            <param name="MaxValue"> A maximum value of the range. </param>
+            <returns>
+            <para> <paramref name="MaxValue"/> if <paramref name="Value"/> greater than <paramref name="MaxValue"/>. </para>
+            <para> <paramref name="MinValue"/> if <paramref name="Value"/> less than <paramref name="MinValue"/>. </para>
+            <para> Otherwise <paramref name="Value"/>. </para>
+            </returns>
+        </member>
+        <member name="M:EOpt.Math.ClampDouble.RandomClamp(System.Double,System.Double,System.Double,EOpt.Math.Random.IContUniformGen)">
+            <summary>
+            If <paramref name="Value"/> out of range [ <paramref name="MinValue"/>;
+            <paramref name="MaxValue"/>], then clipping to a random value in the range.
+            </summary>
+            <param name="Value">     </param>
+            <param name="MinValue">   A minimum value of the range. </param>
+            <param name="MaxValue">   A maximum value of the range. </param>
+            <param name="UniformGen"> A random generator. </param>
+            <returns>
+            <para>
+            A random value in the range [ <paramref name="MinValue"/>; <paramref name="MaxValue"/>]
+            if <paramref name="Value"/> greater than <paramref name="MaxValue"/> or less than <paramref name="MinValue"/>.
+            </para>
+            <para> Otherwise <paramref name="Value"/>. </para>
+            </returns>
+        </member>
+        <member name="T:EOpt.Math.Сombinatorics">
+            <summary>
+            Combinatorics algorithms. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Сombinatorics.RandomChoice``1(System.Collections.Generic.IReadOnlyList{``0},System.Random)">
+            <summary>
+            A random choice. 
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="Collection"></param>
+            <param name="RandGen">   </param>
+            <returns></returns>
+        </member>
+        <member name="M:EOpt.Math.Сombinatorics.RandomPermutation``1(System.Collections.Generic.IList{``0},System.Random)">
+            <summary>
+            A random permutation with uniform distribution. 
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="Collection"></param>
+            <param name="RandGen">   </param>
+        </member>
+        <member name="T:EOpt.Math.CmpDouble">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.CmpDouble.AlmostEqual(System.Double,System.Double,System.Int32)">
+            <summary>
+            Compares two doubles and determines if they are equal within the specified precision. The
+            precision is calculating as: Constants.Eps * 10 ^ <paramref name="Exponent"/>.
+            </summary>
+            <param name="Value1">  </param>
+            <param name="Value2">  </param>
+            <param name="Exponent"> The exponent of 10. It must be &gt;= 0. </param>
+            <returns></returns>
+        </member>
+        <member name="M:EOpt.Math.CmpDouble.DoubleCompare(System.Double,System.Double)">
+            <summary>
+            Usual comparison of double. It needed for the non-dominated sorting.
+            </summary>
+            <param name="Value1"></param>
+            <param name="Value2"></param>
+            <returns></returns>
+        </member>
+        <member name="T:EOpt.Math.Constants">
+            <summary>
+            Class for global constants. 
+            </summary>
+        </member>
+        <member name="F:EOpt.Math.Constants.EPS">
+            <summary>
+            Machine's epsilon for double. 
+            </summary>
+        </member>
+        <member name="F:EOpt.Math.Constants.EPS_EXPONENT">
+            <summary>
+            Exponent of machine epsilon. 
+            </summary>
+        </member>
+        <member name="F:EOpt.Math.Constants.VALUE_AVOID_DIV_BY_ZERO">
+            <summary>
+            Number, which add for avoiding division by zero. 
+            </summary>
+        </member>
+        <member name="T:EOpt.Math.KahanSum">
+            <summary>
+            Kahan summation algorithm.
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.KahanSum.Sum">
+            <summary>
+            A sum.
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.KahanSum.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.KahanSum.SumResest">
+            <summary>
+            Reset sum.
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.KahanSum.Add(System.Double)">
+            <summary>
+            Add a summand.
+            </summary>
+            <param name="Value"></param>
+        </member>
+        <member name="T:EOpt.Math.LA.DynSymmetricMatrix">
+            <summary>
+            Symmetric matrix.
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.LA.DynSymmetricMatrix.GetIndexInArray(System.Int32,System.Int32)">
+            <summary>
+            <para>
+             Transformation two-dimension index to one-dimension for determine position element in the array. 
+            </para>
+            <para>
+            Matrix. (* - it is element of the matrix). 
+              0 1 2 3 (indices)
+            0 * 
+            1 * * 
+            2 * * * 
+            3 * * * *
+            Linearization: [*] [* *] [* * *] [* * * *] (0, 0) transform to 0; (1, 0) transform to 1;
+            (1, 1) transform to 2; (2, 2) transform to 5; (i, j) transform to i * (i + 1) / 2 + j.
+            The formula works for i &gt;= j.
+            </para>
+            </summary>
+            <param name="RowIndex">   </param>
+            <param name="ColumnIndex"></param>
+            <returns></returns>
+        </member>
+        <member name="P:EOpt.Math.LA.DynSymmetricMatrix.ColumnCount">
+            <summary>
+            Get column count of matrix. The column count is equal to row count.
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.LA.DynSymmetricMatrix.RowCount">
+            <summary>
+            Get row count of matrix. The row count is equal to column count.
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.LA.DynSymmetricMatrix.Fill(System.Double)">
+            <summary>
+            Fill the matrix with <paramref name="Value"/>.
+            </summary>
+            <param name="Value"></param>
+        </member>
+        <member name="M:EOpt.Math.LA.DynSymmetricMatrix.#ctor(System.Int32)">
+            <summary>
+            Create a symmetric matrix. Row and column count are equal <paramref name="Size"/>.
+            Elements of matrix are equal default value 0.
+            </summary>
+            <param name="Size"> Row and column count. </param>
+            <exception cref="T:System.ArgumentException"> If <paramref name="Size"/> &lt; 1. </exception>
+        </member>
+        <member name="M:EOpt.Math.LA.DynSymmetricMatrix.#ctor(System.Int32,System.Double)">
+            <summary>
+            Create symmetric matrix. Row and column count equal <paramref name="Size"/>. Elements of
+            matrix are equal <paramref name="DefaultValue"/>.
+            </summary>
+            <param name="Size">         Row and column count. </param>
+            <param name="DefaultValue"> A default value for elements of matrix. </param>
+            <exception cref="T:System.ArgumentException"> If <paramref name="Size"/> &lt; 1. </exception>
+        </member>
+        <member name="M:EOpt.Math.LA.DynSymmetricMatrix.#ctor(System.Double[0:,0:])">
+            <summary>
+            Create symmetric matrix from array <paramref name="Elements"/>. 
+            </summary>
+            <param name="Elements"></param>
+            <exception cref="T:System.ArgumentException">
+            If <paramref name="Elements"/> is not squared matrix or symmetric matrix.
+            </exception>
+            <exception cref="T:System.ArgumentNullException"> If <paramref name="Elements"/> is null. </exception>
+        </member>
+        <member name="P:EOpt.Math.LA.DynSymmetricMatrix.Item(System.Int32,System.Int32)">
+            <summary>
+            Get or set value of element of the matrix. 
+            </summary>
+            <param name="RowIndex">   </param>
+            <param name="ColumnIndex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EOpt.Math.LA.DynSymmetricMatrix.ToArray">
+            <summary>
+            Copy matrix into two-dimensional array. 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:EOpt.Math.Optimization.Agent.Objs">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.Agent.Point">
+            <summary>
+            </summary>
+        </member>
+        <member name="T:EOpt.Math.Optimization.BBBBC`2">
+            <summary>
+            Base class for the BBBC method. 
+            </summary>
+            <typeparam name="TProblem"></typeparam>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BBBBC`2.Init(EOpt.Math.Optimization.BBBCParams,`1,System.Int32)">
+            <summary>
+            </summary>
+            <param name="Parameters"></param>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BBBBC`2.InitAgents(`1,System.Int32)">
+            <summary>
+            </summary>
+            <param name="DimObjs">    </param>
+        </member>
+        <member name="P:EOpt.Math.Optimization.BBBBC`2.Parameters">
+            <summary>
+            Parameters for method. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BBBBC`2.#ctor">
+            <summary>
+            Create the object which uses default implementation for random generators. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BBBBC`2.#ctor(EOpt.Math.Random.IContUniformGen,EOpt.Math.Random.INormalGen)">
+            <summary>
+            Create the object which uses custom implementation for random generators. 
+            </summary>
+            <param name="UniformGen"> Object, which implements <see cref="T:EOpt.Math.Random.IContUniformGen"/> interface. </param>
+            <param name="NormalGen">  Object, which implements <see cref="T:EOpt.Math.Random.INormalGen"/> interface. </param>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="NormalGen"/> or <paramref name="UniformGen"/> is null.
+            </exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BBBBC`2.Minimize(EOpt.Math.Optimization.BBBCParams,`1)">
+            <summary>
+            <see cref="M:EOpt.Math.Optimization.IBaseOptimizer`2.Minimize(`0,`1)"/> 
+            </summary>
+            <param name="Parameters"> Parameters for method. </param>
+            <param name="Problem">    An optimization problem. </param>
+            <exception cref="T:System.ArgumentException"> If parameters do not set. </exception>
+            <exception cref="T:System.ArgumentNullException"> If <paramref name="Problem"/> is null. </exception>
+            <exception cref="T:EOpt.Exceptions.InvalidValueFunctionException">
+            If the function has value is NaN, PositiveInfinity or NegativeInfinity.
+            </exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BBBBC`2.Minimize(EOpt.Math.Optimization.BBBCParams,`1,System.Threading.CancellationToken)">
+            <summary>
+            <see cref="M:EOpt.Math.Optimization.IBaseOptimizer`2.Minimize(`0,`1,System.Threading.CancellationToken)"/> 
+            </summary>
+            <param name="Parameters">  Parameters for method. </param>
+            <param name="Problem">     An optimization problem. </param>
+            <param name="CancelToken"> <see cref="T:System.Threading.CancellationToken"/> </param>
+            <exception cref="T:System.ArgumentException"> If parameters do not set. </exception>
+            <exception cref="T:System.ArgumentNullException"> If <paramref name="Problem"/> is null. </exception>
+            <exception cref="T:EOpt.Exceptions.InvalidValueFunctionException">
+            If the function has value is NaN, PositiveInfinity or NegativeInfinity.
+            </exception>
+            <exception cref="T:System.OperationCanceledException"></exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BBBBC`2.Minimize(EOpt.Math.Optimization.BBBCParams,`1,System.IProgress{EOpt.Help.Progress})">
+            <summary>
+            <see cref="M:EOpt.Math.Optimization.IBaseOptimizer`2.Minimize(`0,`1,System.IProgress{EOpt.Help.Progress})"/> 
+            </summary>
+            <param name="Parameters"> Parameters for method. </param>
+            <param name="Problem">    An optimization problem. </param>
+            <param name="Reporter">  
+            Object which implement interface <see cref="T:System.IProgress`1"/>, where T is <see cref="T:EOpt.Help.Progress"/>.
+            </param>
+            <exception cref="T:System.ArgumentException"> If parameters do not set. </exception>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="Problem"/> or <paramref name="Reporter"/> is null.
+            </exception>
+            <exception cref="T:EOpt.Exceptions.InvalidValueFunctionException">
+            If the function has value is NaN, PositiveInfinity or NegativeInfinity.
+            </exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BBBBC`2.Minimize(EOpt.Math.Optimization.BBBCParams,`1,System.IProgress{EOpt.Help.Progress},System.Threading.CancellationToken)">
+            <summary>
+            <see cref="M:EOpt.Math.Optimization.IBaseOptimizer`2.Minimize(`0,`1,System.Threading.CancellationToken)"/> 
+            </summary>
+            <param name="Parameters">  Parameters for method. </param>
+            <param name="Problem">     An optimization problem. </param>
+            <param name="Reporter">   
+            Object which implement interface <see cref="T:System.IProgress`1"/>, where T is <see cref="T:EOpt.Help.Progress"/>.
+            </param>
+            <param name="CancelToken"> <see cref="T:System.Threading.CancellationToken"/> </param>
+            <exception cref="T:System.ArgumentException"> If parameters do not set. </exception>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="Problem"/> or <paramref name="Reporter"/> is null.
+            </exception>
+            <exception cref="T:EOpt.Exceptions.InvalidValueFunctionException">
+            If the function has value is NaN, PositiveInfinity or NegativeInfinity.
+            </exception>
+            <exception cref="T:System.OperationCanceledException"></exception>
+        </member>
+        <member name="T:EOpt.Math.Optimization.BaseFW`2">
+            <summary>
+            Base class for the FW method. 
+            </summary>
+            <typeparam name="TProblem"></typeparam>
+        </member>
+        <member name="F:EOpt.Math.Optimization.BaseFW`2._chargePoints">
+            <summary>
+            Charges. 
+            </summary>
+        </member>
+        <member name="F:EOpt.Math.Optimization.BaseFW`2._debris">
+            <summary>
+            Debris for charges. 
+            </summary>
+        </member>
+        <member name="T:EOpt.Math.Optimization.BaseFW`2.WeightOfAgent">
+            <summary>
+            Class for internal computation. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BaseFW`2.FirstMethodDeterminationOfPosition(EOpt.Math.Optimization.Agent,System.Int32,System.Double,System.Collections.Generic.IReadOnlyList{System.Double},System.Collections.Generic.IReadOnlyList{System.Double})">
+            <summary>
+            First method for determination of position of the debris. 
+            </summary>
+            <param name="Splinter">        </param>
+            <param name="CountOfDimension"></param>
+            <param name="Amplitude">       </param>
+            <param name="LowerBounds">     </param>
+            <param name="UpperBounds">     </param>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BaseFW`2.GenerateIndexesOfAxes">
+            <summary>
+            Generate randomly indices of axes. 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BaseFW`2.SecondMethodDeterminationOfPosition(EOpt.Math.Optimization.Agent,System.Int32,System.Collections.Generic.IReadOnlyList{System.Double},System.Collections.Generic.IReadOnlyList{System.Double})">
+            <summary>
+            Second method for determination of position of the debris. 
+            </summary>
+            <param name="Splinter">        </param>
+            <param name="CountOfDimension"></param>
+            <param name="LowerBounds">     </param>
+            <param name="UpperBounds">     </param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:EOpt.Math.Optimization.BaseFW`2.TakeAgents(System.Int32,System.Int32)" -->
+        <member name="P:EOpt.Math.Optimization.BaseFW`2.Parameters">
+            <summary>
+            Parameters for method. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BaseFW`2.#ctor">
+            <summary>
+            Create the object which uses default implementation for random generators. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BaseFW`2.#ctor(EOpt.Math.Random.IContUniformGen,EOpt.Math.Random.INormalGen)">
+            <summary>
+            Create the object which uses custom implementation for random generators. 
+            </summary>
+            <param name="UniformGen">
+            Object, which implements <see cref="T:EOpt.Math.Random.IContUniformGen"/> interface.
+            </param>
+            <param name="NormalGen">  Object, which implements <see cref="T:EOpt.Math.Random.INormalGen"/> interface. </param>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="NormalGen"/> or <paramref name="UniformGen"/> is null.
+            </exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BaseFW`2.Minimize(EOpt.Math.Optimization.FWParams,`1)">
+            <summary>
+            <see cref="M:EOpt.Math.Optimization.IBaseOptimizer`2.Minimize(`0,`1)"/>. 
+            </summary>
+            <param name="Parameters"></param>
+            <param name="Problem">   </param>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BaseFW`2.Minimize(EOpt.Math.Optimization.FWParams,`1,System.Threading.CancellationToken)">
+            <summary>
+            <see cref="M:EOpt.Math.Optimization.IBaseOptimizer`2.Minimize(`0,`1)"/>. 
+            </summary>
+            <param name="Parameters"> </param>
+            <param name="Problem">    </param>
+            <param name="CancelToken"></param>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BaseFW`2.Minimize(EOpt.Math.Optimization.FWParams,`1,System.IProgress{EOpt.Help.Progress})">
+            <summary>
+            <see cref="M:EOpt.Math.Optimization.IBaseOptimizer`2.Minimize(`0,`1)"/>. 
+            </summary>
+            <param name="Parameters"></param>
+            <param name="Problem">   </param>
+            <param name="Reporter">  </param>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BaseFW`2.Minimize(EOpt.Math.Optimization.FWParams,`1,System.IProgress{EOpt.Help.Progress},System.Threading.CancellationToken)">
+            <summary>
+            <see cref="M:EOpt.Math.Optimization.IBaseOptimizer`2.Minimize(`0,`1)"/>. 
+            </summary>
+            <param name="Parameters"> </param>
+            <param name="Problem">    </param>
+            <param name="Reporter">   </param>
+            <param name="CancelToken"></param>
+        </member>
+        <member name="F:EOpt.Math.Optimization.BaseGEM`2._grenades">
+            <summary>
+            Grenades. 
+            </summary>
+        </member>
+        <member name="F:EOpt.Math.Optimization.BaseGEM`2._shrapnels">
+            <summary>
+            Shrapnels. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BaseGEM`2.FindBestPosition(System.Int32,System.Func{EOpt.Math.Optimization.Agent,EOpt.Math.Optimization.Agent,System.Boolean})">
+            <summary>
+            Search a best position to grenade. 
+            </summary>
+            <param name="WhichGrenade"></param>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BaseGEM`2.FindOSD(System.Int32,System.Int32,System.Int32,System.Int32,System.Func{EOpt.Math.Optimization.Agent,EOpt.Math.Optimization.Agent,System.Boolean})">
+            <summary>
+            Searching OSD and Xosd position. 
+            </summary>
+            <param name="WhichGrenade"></param>
+            <param name="NumIter">     </param>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BaseGEM`2.InitAgents(System.Collections.Generic.IReadOnlyList{System.Double},System.Collections.Generic.IReadOnlyList{System.Double},System.Int32)">
+            <summary>
+            Create grenades. 
+            </summary>
+            <param name="LowerBounds"></param>
+            <param name="UpperBounds"></param>
+            <param name="DimObjs">    </param>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BaseGEM`2.TransformCoord(System.Double[],System.Collections.Generic.IReadOnlyList{System.Double},System.Collections.Generic.IReadOnlyList{System.Double})">
+            <summary>
+            Coordinates transformation: [-1; 1] -&gt; [LowerBounds[i]; UpperBounds[i]]. 
+            </summary>
+            <param name="X"> Input coordinates. </param>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BaseGEM`2.UpdateParams(System.Int32,System.Int32)">
+            <summary>
+            Update parameters. 
+            </summary>
+            <param name="NumIter"></param>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BaseGEM`2.#ctor">
+            <summary>
+            Create object which uses custom implementation for random generators. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BaseGEM`2.#ctor(EOpt.Math.Random.IContUniformGen,EOpt.Math.Random.INormalGen)">
+            <summary>
+            Create object which uses custom implementation for random generators. 
+            </summary>
+            <param name="UniformGen"> Object, which implements <see cref="T:EOpt.Math.Random.IContUniformGen"/> interface. </param>
+            <param name="NormalGen">  Object, which implements <see cref="T:EOpt.Math.Random.INormalGen"/> interface. </param>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="NormalGen"/> or <paramref name="UniformGen"/> is null.
+            </exception>
+        </member>
+        <member name="T:EOpt.Math.Optimization.BBBCParams">
+            <summary>
+            Parameters for BBBC method. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.BBBCParams.Alpha">
+            <summary>
+            Alpha - restricts the search area for each points. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.BBBCParams.Beta">
+            <summary>
+            Beta - the parameter that determines the effect of the "center of mass" and the best
+            current solution.
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.BBBCParams.Imax">
+            <summary>
+            The number of iteration. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.BBBCParams.IsParamsInit">
+            <summary>
+            A value indicates, if parameters are set or not. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.BBBCParams.NP">
+            <summary>
+            Number of points for searching on each iteration. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.BBBCParams.#ctor(System.Int32,System.Int32,System.Double,System.Double)">
+            <summary>
+            Parameters for BBBC method. 
+            </summary>
+            <param name="NP">   
+            Number of points for searching on each iteration. <paramref name="NP"/> &gt; 0.
+            </param>
+            <param name="Imax">  The number of iteration. <paramref name="Imax"/> &gt; 0. </param>
+            <param name="Alpha">
+            Restricts the search area for each points. <paramref name="Alpha"/> &gt; 0.
+            </param>
+            <param name="Beta"> 
+            Parameter that determines the effect of the "center of mass" and the best current
+            solution. <paramref name="Beta"/> in [0;1]
+            </param>
+            <exception cref="T:System.ArgumentException"> If conditions for parameters do not performed. </exception>
+        </member>
+        <member name="T:EOpt.Math.Optimization.Constraints">
+            <summary>
+            Constraints for the optimization problem.
+            </summary>
+        </member>
+        <member name="T:EOpt.Math.Optimization.FWParams">
+            <summary>
+            Parameters for Fireworks method. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.FWParams.Smin">
+            <summary>
+            Minimum number of debris for each charge. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.FWParams.Amax">
+            <summary>
+            The maximum amplitude of explosion. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.FWParams.Smax">
+            <summary>
+            Maximum number of debris for each charge. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.FWParams.Imax">
+            <summary>
+            The number of iteration. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.FWParams.IsParamsInit">
+            <summary>
+            A value indicates, if parameters are set or not. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.FWParams.M">
+            <summary>
+            Parameter affecting the number of debris. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.FWParams.NP">
+            <summary>
+            Number of charges on each iteration. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.FWParams.#ctor(System.Int32,System.Int32,System.Double,System.Int32,System.Int32,System.Double)">
+            <summary>
+            Parameters for Fireworks method. 
+            </summary>
+            <param name="NP">   
+            Number of charges on each iteration. <paramref name="NP"/> &gt; 0.
+            </param>
+            <param name="Imax">  The number of iteration. <paramref name="Imax"/> &gt; 0. </param>
+            <param name="M">    
+            Parameter influences on the number of debris for each charge. <paramref name="M"/> &gt; 0.
+            </param>
+            <param name="Smin">
+            Parameter restricts the number of debris from below. <paramref name="Smin"/> in (0;1),
+            <paramref name="Smin"/> &lt; <paramref name="Smax"/>.
+            </param>
+            <param name="Smax"> 
+            Parameter restricts the number of debris from above. <paramref name="Smax"/> in (0;1),
+            <paramref name="Smax"/> &gt; <paramref name="Smin"/>.
+            </param>
+            <param name="Amax"> 
+            Maximum amplitude of explosion. <paramref name="Amax"/> &gt; 0.
+            </param>
+            <exception cref="T:System.ArgumentException"> If conditions for parameters do not performed. </exception>
+        </member>
+        <member name="T:EOpt.Math.Optimization.GEMParams">
+            <summary>
+            Parameters for GEM method. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.GEMParams.DesiredMin">
+            <summary>
+            The number of desired minimums. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.GEMParams.Imax">
+            <summary>
+            The number of iteration. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.GEMParams.InitRadiusGrenade">
+            <summary>
+            The initial radius of the grenade territory. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.GEMParams.IsParamsInit">
+            <summary>
+            A value indicates, if parameters are set or not. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.GEMParams.Mmax">
+            <summary>
+            Maximum value of exponent for reduce the radius of explosion. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.GEMParams.Mmin">
+            <summary>
+            Minimum value of exponent for reduce the radius of explosion. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.GEMParams.NGrenade">
+            <summary>
+            Number of grenades on each iteration. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.GEMParams.NShrapnel">
+            <summary>
+            Number of shrapnel for each grenade. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.GEMParams.Psin">
+            <summary>
+            The exponent for determine weight optimal search direction m_osd. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.GEMParams.Pts">
+            <summary>
+            Probability of collision. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.GEMParams.RadiusReduct">
+            <summary>
+            The coefficient of radius reduction. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.GEMParams.#ctor(System.Int32,System.Int32,System.Int32,System.Double,System.Double,System.Double,System.Double,System.Double,System.Double,System.Int32)">
+            <summary>
+            Parameters for GEM. 
+            </summary>
+            <param name="NGrenade">            
+            Number of grenades on each iteration. <paramref name="NGrenade"/> &gt;= 1.
+            </param>
+            <param name="NShrapnel">           
+            Number of shrapnel for each grenade. <paramref name="NShrapnel"/> &gt;= 1.
+            </param>
+            <param name="Imax">                
+            The number of iteration. <paramref name="Imax"/> &gt;= 1.
+            </param>
+            <param name="InitRadiusGrenade">   
+            The initial radius of the grenade territory. Maximum value is equal 2 * sqrt(n), where
+            n-dimension space. <paramref name="InitRadiusGrenade"/> &gt; 0.
+            </param>
+            <param name="RadiusReduct">        
+            The coefficient of radius reduction. <paramref name="RadiusReduct"/> &gt; 1.
+            </param>
+            <param name="ProbabilityCollision">
+            Probability of collision. <paramref name="NGrenade"/> in (0;1).
+            </param>
+            <param name="Mmax">                
+            <para>
+            Maximum value of exponent for reduce the radius of explosion. <paramref name="Mmax"/> in (0;1].
+            </para>
+            <para> <paramref name="Mmax"/> &gt; <paramref name="Mmin"/>. </para>
+            </param>
+            <param name="Mmin">                
+            <para>
+            Minimum value of exponent for reduce the radius of explosion. <paramref name="Mmin"/> in [0;1).
+            </para>
+            <para> <paramref name="Mmin"/> &lt; <paramref name="Mmax"/>. </para>
+            </param>
+            <param name="DesiredMinimum">      
+            The number of desired minimums. <paramref name="DesiredMinimum"/> &gt;= 1.
+            </param>
+            <param name="Psin">                
+            The exponent for determine weight optimal search direction m_osd. <paramref name="Psin"/>
+            &gt; 0.
+            </param>
+            <exception cref="T:System.ArgumentException"> If conditions for parameters do not performed. </exception>
+        </member>
+        <member name="T:EOpt.Math.Optimization.IBaseOptimizer`2">
+            <summary>
+            </summary>
+            <typeparam name="TParams"> A type of the parameters. </typeparam>
+            <typeparam name="TProblem"> A type of the optimization problem. </typeparam>
+        </member>
+        <member name="M:EOpt.Math.Optimization.IBaseOptimizer`2.Minimize(`0,`1)">
+            <summary>
+            Finding solution of the constrained optimization problem. 
+            </summary>
+            <param name="Parameters"> Parameters for method. </param>
+            <param name="Problem">    An optimization problem. </param>
+        </member>
+        <member name="M:EOpt.Math.Optimization.IBaseOptimizer`2.Minimize(`0,`1,System.Threading.CancellationToken)">
+            <summary>
+            Finding solution of the constrained optimization problem. 
+            </summary>
+            <param name="Parameters">  Parameters for method. </param>
+            <param name="Problem">     An optimization problem. </param>
+            <param name="CancelToken"> <see cref="T:System.Threading.CancellationToken"/> </param>
+        </member>
+        <member name="M:EOpt.Math.Optimization.IBaseOptimizer`2.Minimize(`0,`1,System.IProgress{EOpt.Help.Progress})">
+            <summary>
+            Finding solution of the constrained optimization problem. If you want to see progress,
+            then you need to set <paramref name="Reporter"/>.
+            </summary>
+            <param name="Parameters"> Parameters for method. </param>
+            <param name="Problem">    An optimization problem. </param>
+            <param name="Reporter">   An object which implements interface <see cref="T:System.IProgress`1"/>. </param>
+        </member>
+        <member name="M:EOpt.Math.Optimization.IBaseOptimizer`2.Minimize(`0,`1,System.IProgress{EOpt.Help.Progress},System.Threading.CancellationToken)">
+            <summary>
+            Finding solution of the constrained optimization problem. If you want to see progress,
+            then you need to set <paramref name="Reporter"/>.
+            </summary>
+            <param name="Parameters">  Parameters for method. </param>
+            <param name="Problem">     An optimization problem. </param>
+            <param name="Reporter">    An object which implements interface <see cref="T:System.IProgress`1"/>. </param>
+            <param name="CancelToken"> <see cref="T:System.Threading.CancellationToken"/> </param>
+        </member>
+        <member name="T:EOpt.Math.Optimization.MOOpt.IMOOptimizer`1">
+            <summary>
+            Interface for multiobjective optimization methods. 
+            </summary>
+            <typeparam name="TParams"></typeparam>
+        </member>
+        <member name="P:EOpt.Math.Optimization.MOOpt.IMOOptimizer`1.ParetoFront">
+            <summary>
+            The solution of the constrained optimization problem. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.MOOpt.MOBBBCOptimizer.#ctor">
+            <summary>
+            Create the object which uses default implementation for random generators. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.MOOpt.MOBBBCOptimizer.#ctor(EOpt.Math.Random.IContUniformGen,EOpt.Math.Random.INormalGen)">
+            <summary>
+            Create the object which uses custom implementation for random generators. 
+            </summary>
+            <param name="UniformGen"> Object, which implements <see cref="T:EOpt.Math.Random.IContUniformGen"/> interface. </param>
+            <param name="NormalGen">  Object, which implements <see cref="T:EOpt.Math.Random.INormalGen"/> interface. </param>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="NormalGen"/> or <paramref name="UniformGen"/> is null.
+            </exception>
+        </member>
+        <member name="T:EOpt.Math.Optimization.MOOpt.MOFWOptimizer">
+            <summary>
+            Optimization method Fireworks. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.MOOpt.MOFWOptimizer.FindAmountDebris(System.Int32[])">
+            <summary>
+            Find amount debris for each point of charge. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.MOOpt.MOFWOptimizer.GenerateDebris(System.Collections.Generic.IReadOnlyList{System.Double},System.Collections.Generic.IReadOnlyList{System.Double},System.Func{System.Collections.Generic.IReadOnlyList{System.Double},System.Collections.Generic.IEnumerable{System.Double}},System.Int32[])">
+            <summary>
+            Determine debris position. 
+            </summary>
+            <param name="ChargeFronts"></param>
+            <param name="LowerBounds"> </param>
+            <param name="UpperBounds"> </param>
+            <param name="Function">    </param>
+        </member>
+        <member name="M:EOpt.Math.Optimization.MOOpt.MOFWOptimizer.GenerateNextAgents(System.Int32,System.Collections.Generic.IEnumerable{EOpt.Math.Optimization.Agent},System.Int32[])">
+            <summary>
+            Generate current population. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.MOOpt.MOFWOptimizer.#ctor">
+            <summary>
+            Create object which uses default implementation for random generators. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.MOOpt.MOFWOptimizer.#ctor(EOpt.Math.Random.IContUniformGen,EOpt.Math.Random.INormalGen)">
+            <summary>
+            Create object which uses custom implementation for random generators. 
+            </summary>
+            <param name="UniformGen">
+            Object, which implements <see cref="T:EOpt.Math.Random.IContUniformGen"/> interface.
+            </param>
+            <param name="NormalGen">  Object, which implements <see cref="T:EOpt.Math.Random.INormalGen"/> interface. </param>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="NormalGen"/> or <paramref name="UniformGen"/> is null.
+            </exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.MOOpt.MOFWOptimizer.Minimize(EOpt.Math.Optimization.FWParams,EOpt.Math.Optimization.MOOpt.IMOOptProblem)">
+            <summary>
+            <see cref="!:IOOOptimizer&lt;T&gt;.Minimize(GeneralParams)"/> 
+            </summary>
+            <param name="GenParams"> General parameters. <see cref="!:GeneralParams"/>. </param>
+            <exception cref="T:System.InvalidOperationException"> If parameters do not set. </exception>
+            <exception cref="T:System.ArgumentNullException"> If <paramref name="GenParams"/> is null. </exception>
+            <exception cref="T:System.ArithmeticException">
+            If the function has value is NaN, PositiveInfinity or NegativeInfinity.
+            </exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.MOOpt.MOFWOptimizer.Minimize(EOpt.Math.Optimization.FWParams,EOpt.Math.Optimization.MOOpt.IMOOptProblem,System.Threading.CancellationToken)">
+            <summary>
+            <see cref="!:IOOOptimizer&lt;T&gt;.Minimize(GeneralParams, CancellationToken)"/> 
+            </summary>
+            <param name="GenParams">   General parameters. <see cref="!:GeneralParams"/>. </param>
+            <param name="CancelToken"> <see cref="T:System.Threading.CancellationToken"/> </param>
+            <exception cref="T:System.InvalidOperationException"> If parameters do not set. </exception>
+            <exception cref="T:System.ArgumentNullException"> If <paramref name="GenParams"/> is null. </exception>
+            <exception cref="T:System.ArithmeticException">
+            If the function has value is NaN, PositiveInfinity or NegativeInfinity.
+            </exception>
+            <exception cref="T:System.OperationCanceledException"></exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.MOOpt.MOFWOptimizer.Minimize(EOpt.Math.Optimization.FWParams,EOpt.Math.Optimization.MOOpt.IMOOptProblem,System.IProgress{EOpt.Help.Progress})">
+            <summary>
+            <see cref="!:IOOOptimizer&lt;T&gt;.Minimize(GeneralParams, IProgress&lt;Progress&gt;)"/> 
+            </summary>
+            <param name="GenParams"> General parameters. <see cref="!:GeneralParams"/>. </param>
+            <param name="Reporter"> 
+            Object which implement interface <see cref="T:System.IProgress`1"/>, where T is
+            <see cref="T:EOpt.Help.Progress"/>. <seealso cref="!:IOOOptimizer&lt;T&gt;.Minimize(GeneralParams, IProgress&lt;Progress&gt;)"/>
+            </param>
+            <exception cref="T:System.InvalidOperationException"> If parameters do not set. </exception>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="GenParams"/> or <paramref name="Reporter"/> is null.
+            </exception>
+            <exception cref="T:System.ArithmeticException">
+            If the function has value is NaN, PositiveInfinity or NegativeInfinity.
+            </exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.MOOpt.MOFWOptimizer.Minimize(EOpt.Math.Optimization.FWParams,EOpt.Math.Optimization.MOOpt.IMOOptProblem,System.IProgress{EOpt.Help.Progress},System.Threading.CancellationToken)">
+            <summary>
+            <see cref="!:IOOOptimizer&lt;T&gt;.Minimize(GeneralParams, IProgress&lt;Progress&gt;)"/> 
+            </summary>
+            <param name="GenParams"> General parameters. <see cref="!:GeneralParams"/>. </param>
+            <param name="Reporter"> 
+            Object which implement interface <see cref="T:System.IProgress`1"/>, where T is
+            <see cref="T:EOpt.Help.Progress"/>.
+            <seealso cref="!:IOOOptimizer&lt;T&gt;.Minimize(GeneralParams, IProgress&lt;Progress&gt;)"/><param name="CancelToken"> <see cref="T:System.Threading.CancellationToken"/></param>
+            </param>
+            <exception cref="T:System.InvalidOperationException"> If parameters do not set. </exception>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="GenParams"/> or <paramref name="Reporter"/> is null.
+            </exception>
+            <exception cref="T:System.ArithmeticException">
+            If the function has value is NaN, PositiveInfinity or NegativeInfinity.
+            </exception>
+            <exception cref="T:System.OperationCanceledException"></exception>
+        </member>
+        <member name="P:EOpt.Math.Optimization.MOOpt.MOFWParams.Smin">
+            <summary>
+            Minimum number of debris for each charge. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.MOOpt.MOFWParams.Amax">
+            <summary>
+            The maximum amplitude of explosion. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.MOOpt.MOFWParams.Smax">
+            <summary>
+            Maximum number of debris for each charge. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.MOOpt.MOFWParams.Imax">
+            <summary>
+            The number of iteration. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.MOOpt.MOFWParams.IsParamsInit">
+            <summary>
+            A value indicates, if parameters are set or not. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.MOOpt.MOFWParams.M">
+            <summary>
+            Parameter affecting the number of debris. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.MOOpt.MOFWParams.NP">
+            <summary>
+            Number of charges on each iteration. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.MOOpt.MOFWParams.#ctor(EOpt.Math.Optimization.FWParams,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="Parameters"></param>
+            <param name="NewStrategyIter"></param>
+        </member>
+        <member name="T:EOpt.Math.Optimization.MOOpt.MOGEMOptimizer">
+            <summary>
+            Optimization method GEM. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.MOOpt.MOGEMOptimizer.EvalFunctionForGrenades">
+            <summary>
+            Calculate target function for the grenades. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.MOOpt.MOGEMOptimizer.EvalFunctionForShrapnels(System.Int32)">
+            <summary>
+            Calculate target function for the shrapnels. Shrapnels from grenade under number <paramref name="WhichGrenade"/>. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.MOOpt.MOGEMOptimizer.GenerateShrapneles(EOpt.Math.Optimization.MOOpt.IMOOptProblem,System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Determine shrapnels position. 
+            </summary>
+            <param name="WhichGrenade"></param>
+            <param name="NumIter">     </param>
+        </member>
+        <member name="P:EOpt.Math.Optimization.MOOpt.MOGEMOptimizer.ParetoFront">
+            <summary>
+            The solution of the constrained optimization problem. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.MOOpt.MOGEMOptimizer.#ctor">
+            <summary>
+            Create object which uses custom implementation for random generators. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.MOOpt.MOGEMOptimizer.#ctor(EOpt.Math.Random.IContUniformGen,EOpt.Math.Random.INormalGen)">
+            <summary>
+            Create object which uses custom implementation for random generators. 
+            </summary>
+            <param name="UniformGen"> Object, which implements <see cref="T:EOpt.Math.Random.IContUniformGen"/> interface. </param>
+            <param name="NormalGen">  Object, which implements <see cref="T:EOpt.Math.Random.INormalGen"/> interface. </param>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="NormalGen"/> or <paramref name="UniformGen"/> is null.
+            </exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.MOOpt.MOGEMOptimizer.Minimize(EOpt.Math.Optimization.GEMParams,EOpt.Math.Optimization.MOOpt.IMOOptProblem)">
+            <summary>
+            <see cref="!:IOOOptimizer&lt;T&gt;.Minimize(T, OOOptimizationProblem)"/> 
+            </summary>
+            <param name="Parameters"> Parameters for method. </param>
+            <param name="Problem">    An optimization problem. </param>
+            <exception cref="T:System.InvalidOperationException"> If parameters do not set. </exception>
+            <exception cref="T:System.ArgumentNullException"> If <paramref name="Problem"/> is null. </exception>
+            <exception cref="T:System.ArithmeticException">
+            If the function has value is NaN, PositiveInfinity or NegativeInfinity.
+            </exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.MOOpt.MOGEMOptimizer.Minimize(EOpt.Math.Optimization.GEMParams,EOpt.Math.Optimization.MOOpt.IMOOptProblem,System.Threading.CancellationToken)">
+            <summary>
+            <see cref="!:IOOOptimizer&lt;T&gt;.Minimize(T, OOOptimizationProblem, CancellationToken)"/> 
+            </summary>
+            <param name="Parameters">  Parameters for method. </param>
+            <param name="Problem">     An optimization problem. </param>
+            <param name="CancelToken"> <see cref="T:System.Threading.CancellationToken"/> </param>
+            <exception cref="T:System.InvalidOperationException"> If parameters do not set. </exception>
+            <exception cref="T:System.ArgumentNullException"> If <paramref name="Problem"/> is null. </exception>
+            <exception cref="T:System.ArithmeticException">
+            If the function has value is NaN, PositiveInfinity or NegativeInfinity.
+            </exception>
+            <exception cref="T:System.OperationCanceledException"></exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.MOOpt.MOGEMOptimizer.Minimize(EOpt.Math.Optimization.GEMParams,EOpt.Math.Optimization.MOOpt.IMOOptProblem,System.IProgress{EOpt.Help.Progress})">
+            <summary>
+            <see cref="!:IOOOptimizer&lt;T&gt;.Minimize(T, OOOptimizationProblem, CancellationToken)"/> 
+            </summary>
+            <param name="Parameters"> Parameters for method. </param>
+            <param name="Problem">    An optimization problem. </param>
+            <param name="Reporter">  
+            Object which implement interface <see cref="T:System.IProgress`1"/>, where T is
+            <see cref="T:EOpt.Help.Progress"/>. <seealso cref="!:IOOOptimizer&lt;T&gt;.Minimize(T, OOOptimizationProblem, IProgress&lt;Progress&gt;)"/>
+            </param>
+            <exception cref="T:System.InvalidOperationException"> If parameters do not set. </exception>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="Problem"/> or <paramref name="Reporter"/> is null.
+            </exception>
+            <exception cref="T:System.ArithmeticException">
+            If the function has value is NaN, PositiveInfinity or NegativeInfinity.
+            </exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.MOOpt.MOGEMOptimizer.Minimize(EOpt.Math.Optimization.GEMParams,EOpt.Math.Optimization.MOOpt.IMOOptProblem,System.IProgress{EOpt.Help.Progress},System.Threading.CancellationToken)">
+            <summary>
+            <see cref="!:IOOOptimizer&lt;T&gt;.Minimize(T, OOOptimizationProblem, CancellationToken)"/> 
+            </summary>
+            <param name="Parameters">  Parameters for method. </param>
+            <param name="Problem">     An optimization problem. </param>
+            <param name="Reporter">   
+            Object which implement interface <see cref="T:System.IProgress`1"/>, where T is
+            <see cref="T:EOpt.Help.Progress"/>. <seealso cref="!:IOOOptimizer&lt;T&gt;.Minimize(T, OOOptimizationProblem, IProgress&lt;Progress&gt;)"/>
+            </param>
+            <param name="CancelToken"> <see cref="T:System.Threading.CancellationToken"/> </param>
+            <exception cref="T:System.InvalidOperationException"> If parameters do not set. </exception>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="Problem"/> or <paramref name="Reporter"/> is null.
+            </exception>
+            <exception cref="T:System.ArithmeticException">
+            If the function has value is NaN, PositiveInfinity or NegativeInfinity.
+            </exception>
+            <exception cref="T:System.OperationCanceledException"></exception>
+        </member>
+        <member name="T:EOpt.Math.Optimization.OOOpt.BBBCOptimizer">
+            <summary>
+            Optimization method BBBC. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.OOOpt.BBBCOptimizer.Solution">
+            <summary>
+            The solution of the constrained optimization problem. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.BBBCOptimizer.#ctor">
+            <summary>
+            Create the object which uses default implementation for random generators. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.BBBCOptimizer.#ctor(EOpt.Math.Random.IContUniformGen,EOpt.Math.Random.INormalGen)">
+            <summary>
+            Create the object which uses custom implementation for random generators. 
+            </summary>
+            <param name="UniformGen"> Object, which implements <see cref="T:EOpt.Math.Random.IContUniformGen"/> interface. </param>
+            <param name="NormalGen">  Object, which implements <see cref="T:EOpt.Math.Random.INormalGen"/> interface. </param>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="NormalGen"/> or <paramref name="UniformGen"/> is null.
+            </exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.BBBCOptimizer.Minimize(EOpt.Math.Optimization.BBBCParams,EOpt.Math.Optimization.OOOpt.IOOOptProblem)">
+            <summary>
+            <see cref="M:EOpt.Math.Optimization.IBaseOptimizer`2.Minimize(`0,`1)"/> 
+            </summary>
+            <param name="Parameters"> Parameters for method. </param>
+            <param name="Problem">    An optimization problem. </param>
+            <exception cref="T:System.ArgumentException"> If parameters do not set. </exception>
+            <exception cref="T:System.ArgumentNullException"> If <paramref name="Problem"/> is null. </exception>
+            <exception cref="T:EOpt.Exceptions.InvalidValueFunctionException">
+            If the function has value is NaN, PositiveInfinity or NegativeInfinity.
+            </exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.BBBCOptimizer.Minimize(EOpt.Math.Optimization.BBBCParams,EOpt.Math.Optimization.OOOpt.IOOOptProblem,System.Threading.CancellationToken)">
+            <summary>
+            <see cref="M:EOpt.Math.Optimization.IBaseOptimizer`2.Minimize(`0,`1,System.Threading.CancellationToken)"/> 
+            </summary>
+            <param name="Parameters">  Parameters for method. </param>
+            <param name="Problem">     An optimization problem. </param>
+            <param name="CancelToken"> <see cref="T:System.Threading.CancellationToken"/> </param>
+            <exception cref="T:System.ArgumentException"> If parameters do not set. </exception>
+            <exception cref="T:System.ArgumentNullException"> If <paramref name="Problem"/> is null. </exception>
+            <exception cref="T:EOpt.Exceptions.InvalidValueFunctionException">
+            If the function has value is NaN, PositiveInfinity or NegativeInfinity.
+            </exception>
+            <exception cref="T:System.OperationCanceledException"></exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.BBBCOptimizer.Minimize(EOpt.Math.Optimization.BBBCParams,EOpt.Math.Optimization.OOOpt.IOOOptProblem,System.IProgress{EOpt.Help.Progress})">
+            <summary>
+            <see cref="M:EOpt.Math.Optimization.IBaseOptimizer`2.Minimize(`0,`1,System.IProgress{EOpt.Help.Progress})"/> 
+            </summary>
+            <param name="Parameters"> Parameters for method. </param>
+            <param name="Problem">    An optimization problem. </param>
+            <param name="Reporter">  
+            Object which implement interface <see cref="T:System.IProgress`1"/>, where T is <see cref="T:EOpt.Help.Progress"/>.
+            </param>
+            <exception cref="T:System.ArgumentException"> If parameters do not set. </exception>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="Problem"/> or <paramref name="Reporter"/> is null.
+            </exception>
+            <exception cref="T:EOpt.Exceptions.InvalidValueFunctionException">
+            If the function has value is NaN, PositiveInfinity or NegativeInfinity.
+            </exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.BBBCOptimizer.Minimize(EOpt.Math.Optimization.BBBCParams,EOpt.Math.Optimization.OOOpt.IOOOptProblem,System.IProgress{EOpt.Help.Progress},System.Threading.CancellationToken)">
+            <summary>
+            <see cref="M:EOpt.Math.Optimization.IBaseOptimizer`2.Minimize(`0,`1,System.Threading.CancellationToken)"/> 
+            </summary>
+            <param name="Parameters">  Parameters for method. </param>
+            <param name="Problem">     An optimization problem. </param>
+            <param name="Reporter">   
+            Object which implement interface <see cref="T:System.IProgress`1"/>, where T is <see cref="T:EOpt.Help.Progress"/>.
+            </param>
+            <param name="CancelToken"> <see cref="T:System.Threading.CancellationToken"/> </param>
+            <exception cref="T:System.ArgumentException"> If parameters do not set. </exception>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="Problem"/> or <paramref name="Reporter"/> is null.
+            </exception>
+            <exception cref="T:EOpt.Exceptions.InvalidValueFunctionException">
+            If the function has value is NaN, PositiveInfinity or NegativeInfinity.
+            </exception>
+            <exception cref="T:System.OperationCanceledException"></exception>
+        </member>
+        <member name="T:EOpt.Math.Optimization.OOOpt.FWOptimizer">
+            <summary>
+            Optimization method Fireworks. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.FWOptimizer.FindAmountDebris">
+            <summary>
+            Find amount debris for each point of charge. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.FWOptimizer.FindBestSolution">
+            <summary>
+            Find best solution among debris and charges. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.FWOptimizer.GenerateDebris(System.Collections.Generic.IReadOnlyList{System.Double},System.Collections.Generic.IReadOnlyList{System.Double})">
+            <summary>
+            Determine debris position. 
+            </summary>
+            <param name="LowerBounds"></param>
+            <param name="UpperBounds"></param>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.FWOptimizer.GenerateNextAgents">
+            <summary>
+            Generate current population. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.OOOpt.FWOptimizer.Solution">
+            <summary>
+            The solution of the constrained optimization problem. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.FWOptimizer.#ctor">
+            <summary>
+            Create object which uses default implementation for random generators. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.FWOptimizer.#ctor(EOpt.Math.Random.IContUniformGen,EOpt.Math.Random.INormalGen)">
+            <summary>
+            Create object which uses custom implementation for random generators. 
+            </summary>
+            <param name="UniformGen"> Object, which implements <see cref="T:EOpt.Math.Random.IContUniformGen"/> interface. </param>
+            <param name="NormalGen">  Object, which implements <see cref="T:EOpt.Math.Random.INormalGen"/> interface. </param>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="NormalGen"/> or <paramref name="UniformGen"/> is null.
+            </exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.FWOptimizer.Minimize(EOpt.Math.Optimization.FWParams,EOpt.Math.Optimization.OOOpt.IOOOptProblem)">
+            <summary>
+            <see cref="!:IOOOptimizer&lt;T&gt;.Minimize(T, OOOptimizationProblem)"/> 
+            </summary>
+            <param name="Parameters"> Parameters for method. </param>
+            <param name="Problem">    An optimization problem. </param>
+            <exception cref="T:System.InvalidOperationException"> If parameters do not set. </exception>
+            <exception cref="T:System.ArgumentNullException"> If <paramref name="Problem"/> is null. </exception>
+            <exception cref="T:System.ArithmeticException">
+            If the function has value is NaN, PositiveInfinity or NegativeInfinity.
+            </exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.FWOptimizer.Minimize(EOpt.Math.Optimization.FWParams,EOpt.Math.Optimization.OOOpt.IOOOptProblem,System.Threading.CancellationToken)">
+            <summary>
+            <see cref="!:IOOOptimizer&lt;T&gt;.Minimize(T, OOOptimizationProblem, CancellationToken)"/> 
+            </summary>
+            <param name="Parameters">  Parameters for method. </param>
+            <param name="Problem">     An optimization problem. </param>
+            <param name="CancelToken"> <see cref="T:System.Threading.CancellationToken"/> </param>
+            <exception cref="T:System.InvalidOperationException"> If parameters do not set. </exception>
+            <exception cref="T:System.ArgumentNullException"> If <paramref name="Problem"/> is null. </exception>
+            <exception cref="T:System.ArithmeticException">
+            If the function has value is NaN, PositiveInfinity or NegativeInfinity.
+            </exception>
+            <exception cref="T:System.OperationCanceledException"></exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.FWOptimizer.Minimize(EOpt.Math.Optimization.FWParams,EOpt.Math.Optimization.OOOpt.IOOOptProblem,System.IProgress{EOpt.Help.Progress})">
+            <summary>
+            <see cref="!:IOOOptimizer&lt;T&gt;.Minimize(T, OOOptimizationProblem, CancellationToken)"/> 
+            </summary>
+            <param name="Parameters"> Parameters for method. </param>
+            <param name="Problem">    An optimization problem. </param>
+            <param name="Reporter">  
+            Object which implement interface <see cref="T:System.IProgress`1"/>, where T is
+            <see cref="T:EOpt.Help.Progress"/>. <seealso cref="!:IOOOptimizer&lt;T&gt;.Minimize(T, OOOptimizationProblem, IProgress&lt;Progress&gt;)"/>
+            </param>
+            <exception cref="T:System.InvalidOperationException"> If parameters do not set. </exception>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="Problem"/> or <paramref name="Reporter"/> is null.
+            </exception>
+            <exception cref="T:System.ArithmeticException">
+            If the function has value is NaN, PositiveInfinity or NegativeInfinity.
+            </exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.FWOptimizer.Minimize(EOpt.Math.Optimization.FWParams,EOpt.Math.Optimization.OOOpt.IOOOptProblem,System.IProgress{EOpt.Help.Progress},System.Threading.CancellationToken)">
+            <summary>
+            <see cref="!:IOOOptimizer&lt;T&gt;.Minimize(T, OOOptimizationProblem, CancellationToken)"/> 
+            </summary>
+            <param name="Parameters">  Parameters for method. </param>
+            <param name="Problem">     An optimization problem. </param>
+            <param name="Reporter">   
+            Object which implement interface <see cref="T:System.IProgress`1"/>, where T is
+            <see cref="T:EOpt.Help.Progress"/>. <seealso cref="!:IOOOptimizer&lt;T&gt;.Minimize(T, OOOptimizationProblem, IProgress&lt;Progress&gt;)"/>
+            </param>
+            <param name="CancelToken"> <see cref="T:System.Threading.CancellationToken"/> </param>
+            <exception cref="T:System.InvalidOperationException"> If parameters do not set. </exception>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="Problem"/> or <paramref name="Reporter"/> is null.
+            </exception>
+            <exception cref="T:System.ArithmeticException">
+            If the function has value is NaN, PositiveInfinity or NegativeInfinity.
+            </exception>
+            <exception cref="T:System.OperationCanceledException"></exception>
+        </member>
+        <member name="T:EOpt.Math.Optimization.OOOpt.GEMOptimizer">
+            <summary>
+            Optimization method GEM. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.GEMOptimizer.ArrangeGrenades">
+            <summary>
+            Sort by ascending. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.GEMOptimizer.EvalFunctionForGrenades">
+            <summary>
+            Calculate target function for the grenades. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.GEMOptimizer.EvalFunctionForShrapnels(System.Int32)">
+            <summary>
+            Calculate target function for the shrapnels. Shrapnels from grenade under number <paramref name="WhichGrenade"/>. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.GEMOptimizer.FindSolution(EOpt.Math.Optimization.OOOpt.IOOOptProblem)">
+            <summary>
+            Find best solution. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.GEMOptimizer.GenerateShrapneles(EOpt.Math.Optimization.OOOpt.IOOOptProblem,System.Int32,System.Int32)">
+            <summary>
+            Determine shrapnels position. 
+            </summary>
+            <param name="WhichGrenade"></param>
+            <param name="NumIter">     </param>
+        </member>
+        <member name="P:EOpt.Math.Optimization.OOOpt.GEMOptimizer.Solution">
+            <summary>
+            The solution of the constrained optimization problem. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.GEMOptimizer.#ctor">
+            <summary>
+            Create object which uses custom implementation for random generators. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.GEMOptimizer.#ctor(EOpt.Math.Random.IContUniformGen,EOpt.Math.Random.INormalGen)">
+            <summary>
+            Create object which uses custom implementation for random generators. 
+            </summary>
+            <param name="UniformGen"> Object, which implements <see cref="T:EOpt.Math.Random.IContUniformGen"/> interface. </param>
+            <param name="NormalGen">  Object, which implements <see cref="T:EOpt.Math.Random.INormalGen"/> interface. </param>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="NormalGen"/> or <paramref name="UniformGen"/> is null.
+            </exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.GEMOptimizer.Minimize(EOpt.Math.Optimization.GEMParams,EOpt.Math.Optimization.OOOpt.IOOOptProblem)">
+            <summary>
+            <see cref="!:IOOOptimizer&lt;T&gt;.Minimize(T, OOOptimizationProblem)"/> 
+            </summary>
+            <param name="Parameters"> Parameters for method. </param>
+            <param name="Problem">    An optimization problem. </param>
+            <exception cref="T:System.InvalidOperationException"> If parameters do not set. </exception>
+            <exception cref="T:System.ArgumentNullException"> If <paramref name="Problem"/> is null. </exception>
+            <exception cref="T:System.ArithmeticException">
+            If the function has value is NaN, PositiveInfinity or NegativeInfinity.
+            </exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.GEMOptimizer.Minimize(EOpt.Math.Optimization.GEMParams,EOpt.Math.Optimization.OOOpt.IOOOptProblem,System.Threading.CancellationToken)">
+            <summary>
+            <see cref="!:IOOOptimizer&lt;T&gt;.Minimize(T, OOOptimizationProblem, CancellationToken)"/> 
+            </summary>
+            <param name="Parameters">  Parameters for method. </param>
+            <param name="Problem">     An optimization problem. </param>
+            <param name="CancelToken"> <see cref="T:System.Threading.CancellationToken"/> </param>
+            <exception cref="T:System.InvalidOperationException"> If parameters do not set. </exception>
+            <exception cref="T:System.ArgumentNullException"> If <paramref name="Problem"/> is null. </exception>
+            <exception cref="T:System.ArithmeticException">
+            If the function has value is NaN, PositiveInfinity or NegativeInfinity.
+            </exception>
+            <exception cref="T:System.OperationCanceledException"></exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.GEMOptimizer.Minimize(EOpt.Math.Optimization.GEMParams,EOpt.Math.Optimization.OOOpt.IOOOptProblem,System.IProgress{EOpt.Help.Progress})">
+            <summary>
+            <see cref="!:IOOOptimizer&lt;T&gt;.Minimize(T, OOOptimizationProblem, CancellationToken)"/> 
+            </summary>
+            <param name="Parameters"> Parameters for method. </param>
+            <param name="Problem">    An optimization problem. </param>
+            <param name="Reporter">  
+            Object which implement interface <see cref="T:System.IProgress`1"/>, where T is
+            <see cref="T:EOpt.Help.Progress"/>. <seealso cref="!:IOOOptimizer&lt;T&gt;.Minimize(T, OOOptimizationProblem, IProgress&lt;Progress&gt;)"/>
+            </param>
+            <exception cref="T:System.InvalidOperationException"> If parameters do not set. </exception>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="Problem"/> or <paramref name="Reporter"/> is null.
+            </exception>
+            <exception cref="T:System.ArithmeticException">
+            If the function has value is NaN, PositiveInfinity or NegativeInfinity.
+            </exception>
+        </member>
+        <member name="M:EOpt.Math.Optimization.OOOpt.GEMOptimizer.Minimize(EOpt.Math.Optimization.GEMParams,EOpt.Math.Optimization.OOOpt.IOOOptProblem,System.IProgress{EOpt.Help.Progress},System.Threading.CancellationToken)">
+            <summary>
+            <see cref="!:IOOOptimizer&lt;T&gt;.Minimize(T, OOOptimizationProblem, CancellationToken)"/> 
+            </summary>
+            <param name="Parameters">  Parameters for method. </param>
+            <param name="Problem">     An optimization problem. </param>
+            <param name="Reporter">   
+            Object which implement interface <see cref="T:System.IProgress`1"/>, where T is
+            <see cref="T:EOpt.Help.Progress"/>. <seealso cref="!:IOOOptimizer&lt;T&gt;.Minimize(T, OOOptimizationProblem, IProgress&lt;Progress&gt;)"/>
+            </param>
+            <param name="CancelToken"> <see cref="T:System.Threading.CancellationToken"/> </param>
+            <exception cref="T:System.InvalidOperationException"> If parameters do not set. </exception>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="Problem"/> or <paramref name="Reporter"/> is null.
+            </exception>
+            <exception cref="T:System.ArithmeticException">
+            If the function has value is NaN, PositiveInfinity or NegativeInfinity.
+            </exception>
+            <exception cref="T:System.OperationCanceledException"></exception>
+        </member>
+        <member name="T:EOpt.Math.Optimization.IOOOptimizer`1">
+            <summary>
+            Interface for optimization methods. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Optimization.IOOOptimizer`1.Solution">
+            <summary>
+            The solution of the constrained optimization problem. 
+            </summary>
+        </member>
+        <member name="T:EOpt.Math.PointND">
+            <summary>
+            Class is representing a point in N dimension space. 
+            </summary>
+        </member>
+        <member name="F:EOpt.Math.PointND._coordinates">
+            <summary>
+            Coordinates of point. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.PointND.Count">
+            <summary>
+            Number of coordinates. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.PointND.#ctor(System.Double,System.Int32)">
+            <summary>
+            Create point with number of coordinates is equal <paramref name="Dimension"/> and value
+            is <paramref name="DefaultValue"/>.
+            </summary>
+            <param name="DefaultValue"> The value of the coordinate. </param>
+            <param name="Dimension">    Number of coordinates. </param>
+            <exception cref="T:System.ArgumentException"> If <paramref name="Dimension"/> &lt; 1. </exception>
+        </member>
+        <member name="M:EOpt.Math.PointND.#ctor(System.Double[])">
+            <summary>
+            Create point from array <paramref name="Coordinates"/>. 
+            </summary>
+            <param name="Coordinates"> Array of coordinates. </param>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="Coordinates"/> is null.
+            </exception>
+        </member>
+        <member name="P:EOpt.Math.PointND.Item(System.Int32)">
+            <summary>
+            Get <paramref name="i"/>-th coordinate. 
+            </summary>
+            <param name="i"> Index of coordinate. </param>
+            <returns></returns>
+        </member>
+        <member name="M:EOpt.Math.PointND.Distance(EOpt.Math.PointND,EOpt.Math.PointND,System.Int32)">
+            <summary>
+            A distance between two points. 
+            </summary>
+            <param name="Point1"></param>
+            <param name="Point2"></param>
+            <param name="P">      Parameter of the distance. </param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException">
+            If <paramref name="Point1"/> or <paramref name="Point2"/> is null.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            <para> If <paramref name="Point1"/> and <paramref name="Point2"/> have unequal dimension. </para>
+            <para> If <paramref name="P"/> less than 1. </para>
+            </exception>
+        </member>
+        <member name="M:EOpt.Math.PointND.op_Subtraction(EOpt.Math.PointND,EOpt.Math.PointND)">
+            <summary>
+             Subtract two points.
+             </summary>
+             <exception cref="T:System.ArgumentException">If dimensions of <paramref name="Point1"/> is not equal dimension of <paramref name="Point2"/>.</exception>
+             <exception cref="T:System.ArgumentNullException">If <paramref name="Point1"/> or <paramref name="Point2"/> is null.</exception>
+        </member>
+        <member name="M:EOpt.Math.PointND.op_UnaryNegation(EOpt.Math.PointND)">
+            <summary>
+            All coordinates multiply by -1. 
+            </summary>
+            <param name="Point"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException"> If <paramref name="Point"/> is null. </exception>
+        </member>
+        <member name="M:EOpt.Math.PointND.op_Multiply(EOpt.Math.PointND,System.Double)">
+            <summary>
+            Multiplication by <paramref name="Value"/>. 
+            </summary>
+            <param name="Point"></param>
+            <param name="Value"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException"> If <paramref name="Point"/> is null. </exception>
+        </member>
+        <member name="M:EOpt.Math.PointND.op_Multiply(System.Double,EOpt.Math.PointND)">
+            <summary>
+            Multiplication by <paramref name="Value"/>. 
+            </summary>
+            <param name="Point"></param>
+            <param name="Value"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException"> If <paramref name="Point"/> is null. </exception>
+        </member>
+        <member name="M:EOpt.Math.PointND.op_Addition(EOpt.Math.PointND,EOpt.Math.PointND)">
+            <summary>
+             Add two points.
+             </summary>
+             <exception cref="T:System.ArgumentException">If dimensions of <paramref name="Point1"/> is not equal dimension of <paramref name="Point2"/>.</exception>
+             <exception cref="T:System.ArgumentNullException">If <paramref name="Point1"/> or <paramref name="Point2"/> is null.</exception>
+        </member>
+        <member name="M:EOpt.Math.PointND.AddInplace(EOpt.Math.PointND)">
+            <summary>
+            To all coordinates of point add coordinates of <paramref name="Point"/>. This is making inplace. 
+            </summary>
+            <param name="Point"></param>
+            <exception cref="T:System.ArgumentNullException"> If <paramref name="Point"/> is null. </exception>
+            <exception cref="T:System.ArgumentException"> If dimensions are not equal. </exception>
+        </member>
+        <member name="M:EOpt.Math.PointND.AddInplace(System.Double)">
+            <summary>
+            Add a <paramref name="Value"/> to the all coordinates. This is making inplace. 
+            </summary>
+            <param name="Value"></param>
+        </member>
+        <member name="M:EOpt.Math.PointND.DeepCopy">
+            <summary>
+            Create a deep copy. 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EOpt.Math.PointND.Equals(System.Object)">
+            <summary>
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EOpt.Math.PointND.Equals(EOpt.Math.PointND)">
+            <summary>
+            </summary>
+            <param name="Point"></param>
+            <returns></returns>
+        </member>
+        <member name="M:EOpt.Math.PointND.GetEnumerator">
+            <summary>
+            Get enumerator. 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EOpt.Math.PointND.GetHashCode">
+            <summary>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:EOpt.Math.PointND.MultiplyByInplace(System.Double)">
+            <summary>
+            All coordinates multiply by <paramref name="Value"/>. This is making inplace. 
+            </summary>
+            <param name="Value"></param>
+        </member>
+        <member name="M:EOpt.Math.PointND.Norm(System.Int32)">
+            <summary>
+            LP norm. 
+            </summary>
+            <param name="P"> Parameter of the norm. </param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentException"> If <paramref name="P"/> &lt; 1. </exception>
+        </member>
+        <member name="M:EOpt.Math.PointND.SetAt(EOpt.Math.PointND)">
+            <summary>
+            Copy coordinates from <paramref name="Point"/>. 
+            </summary>
+            <param name="Point"></param>
+            <exception cref="T:System.ArgumentNullException"> If <paramref name="Point"/> is null. </exception>
+            <exception cref="T:System.ArgumentException"> If dimensions are not equal. </exception>
+        </member>
+        <member name="M:EOpt.Math.PointND.ToString">
+            <summary>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:EOpt.Math.Random.ContUniformDist">
+            <summary>
+            A continuous uniform distribution. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Random.ContUniformDist.LowBound">
+            <summary>
+            The left boundary of the distribution range. 
+            </summary>
+            <exception cref="T:System.ArgumentException"> If value &gt; UpperBound. </exception>
+        </member>
+        <member name="P:EOpt.Math.Random.ContUniformDist.UpperBound">
+            <summary>
+            The right boundary of the distribution range. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Random.ContUniformDist.#ctor">
+            <summary>
+            Create continuous uniform distribution on [0; 1]. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Random.ContUniformDist.#ctor(System.Double,System.Double)">
+            <summary>
+            Create continuous uniform distribution on [ <paramref name="LowBound"/>; <paramref name="UpperBound"/>]. 
+            </summary>
+            <param name="LowBound">   The lower boundary of the distribution range. </param>
+            <param name="UpperBound"> The upper boundary of the distribution range. </param>
+            <exception cref="T:System.ArgumentException"> If <paramref name="LowBound"/> &gt;= <paramref name="UpperBound"/>. </exception>
+        </member>
+        <member name="M:EOpt.Math.Random.ContUniformDist.URandVal(System.Double,System.Double)">
+            <summary>
+            Random value from continuous uniform distribution on [ <paramref name="LowBound"/>; <paramref name="UpperBound"/>]. 
+            </summary>
+            <param name="LowBound">   The lower boundary of the distribution range. </param>
+            <param name="UpperBound"> The upper boundary of the distribution range. </param>
+            <exception cref="T:System.ArgumentException"> If <paramref name="LowBound"/> &gt;= <paramref name="UpperBound"/>. </exception>
+        </member>
+        <member name="T:EOpt.Math.Random.IContUniformGen">
+            <summary>
+            Interface for a random generator of the uniform distribution. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Random.IContUniformGen.URandVal(System.Double,System.Double)">
+            <summary>
+            Get random value from continuous uniform distribution on [ <paramref name="LowBound"/>; <paramref name="UpperBound"/>]. 
+            </summary>
+            <param name="LowBound">  </param>
+            <param name="UpperBound"></param>
+            <returns></returns>
+        </member>
+        <member name="T:EOpt.Math.Random.INormalGen">
+            <summary>
+            Interface for a random generator of the normal distribution. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Random.INormalGen.NRandVal(System.Double,System.Double)">
+            <summary>
+            Get random value which has normal distribution with mean is equal <paramref name="Mean"/>
+            and standard deviation is equal <paramref name="StdDev"/>.
+            </summary>
+            <param name="Mean">   Mean value. </param>
+            <param name="StdDev"> Standard deviation. </param>
+            <returns></returns>
+        </member>
+        <member name="T:EOpt.Math.Random.NormalDist">
+            <summary>
+            Normal distribution. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Random.NormalDist.Mean">
+            <summary>
+            Mean value. 
+            </summary>
+        </member>
+        <member name="P:EOpt.Math.Random.NormalDist.StdDev">
+            <summary>
+            Standard deviation. 
+            </summary>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
+        <member name="M:EOpt.Math.Random.NormalDist.#ctor">
+            <summary>
+            Create normal distribution with mean is equal 0 and standard deviation is equal 1. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Random.NormalDist.#ctor(System.Double,System.Double)">
+            <summary>
+            Create normal distribution with mean is equal <paramref name="Mean"/> and standard
+            deviation is equal <paramref name="StdDev"/>.
+            </summary>
+            <param name="Mean">   Mean value. </param>
+            <param name="StdDev"> Standard deviation. </param>
+            <exception cref="T:System.ArgumentException"></exception>
+        </member>
+        <member name="M:EOpt.Math.Random.NormalDist.NRandVal(System.Double,System.Double)">
+            <summary>
+            Random value from normal distribution with mean is equal <paramref name="Mean"/> and
+            standard deviation is equal <paramref name="StdDev"/>.
+            </summary>
+            <remarks> Using Marsaglia polar method. </remarks>
+            <param name="Mean">   Mean. </param>
+            <param name="StdDev"> Standard deviation. </param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentException"> If <paramref name="StdDev"/> &lt;=0 </exception>
+        </member>
+        <member name="T:EOpt.Math.Random.SyncRandom">
+            <summary>
+            Random generator for multithreaded application. Each thread get own instance of Random. 
+            </summary>
+        </member>
+        <member name="M:EOpt.Math.Random.SyncRandom.Get">
+            <summary>
+            Get Random instance. Each thread get own instance of Random. 
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
