@@ -15,7 +15,7 @@
 
     abstract class ControlBaseTask : IOOOptProblem
     {
-        private double[] _lowerBounds, _upperBounds;
+        protected double[] _lowerBounds, _upperBounds;
 
         protected double[] _valueofT;
 
@@ -66,8 +66,8 @@
             _lowerBounds[_lowerBounds.Length - 2] = 10;
             _lowerBounds[_lowerBounds.Length - 1] = 10;
 
-            _upperBounds[_upperBounds.Length - 2] = 100;
-            _upperBounds[_upperBounds.Length - 1] = 100;
+            _upperBounds[_upperBounds.Length - 2] = 5000;
+            _upperBounds[_upperBounds.Length - 1] = 5000;
 
             _x0 = CreateVector.Dense<double>(2);
             _x0[0] = x10;

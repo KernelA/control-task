@@ -10,6 +10,11 @@
     {
         public ControlTaskI2(int N, double LowerBound, double UpperBound, double TMax, double x10, double x20) : base(N, LowerBound, UpperBound, TMax, x10, x20)
         {
+            _lowerBounds[_lowerBounds.Length - 2] = 500;
+            _lowerBounds[_lowerBounds.Length - 1] = 500;
+
+            _upperBounds[_upperBounds.Length - 2] = 50_000;
+            _upperBounds[_upperBounds.Length - 1] = 50_000;
 
         }
 
