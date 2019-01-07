@@ -23,15 +23,11 @@
 
         private static Logger _logger2 = LogManager.GetLogger("Main2");
 
-        private const int MAX_RUN = 8;
+        private const int MAX_RUN = 5;
 
-        private static readonly int[] SWITCHES = { 5, 10, 15 };
+        private static readonly int[] SWITCHES = { 5, 8, 10 };
 
-        private const double T_START = 0.0;
-
-        private const double T_END = 2;
-
-        private const int T_N = 10;
+        private static readonly double[] TIMES = { 0.5, 1, 1.5, 2 };
 
         private const double X10 = 0.5, X20 = 1;
 
@@ -46,9 +42,8 @@
 
             object[][] paramteters =
             {
-                new object[numParams] {900, 600, 0.2, 0.5 },
+                new object[numParams] {900, 500, 0.4, 0.5 },
                 new object[numParams] {300, 400, 0.2, 0.1},
-                new object[numParams] {200, 1000, 0.2, 0.5 },
                 new object[numParams] {200, 600, 0.5, 0.5 },
                 new object[numParams] {300, 400, 0.5, 0.9 },
                 new object[numParams] {200, 1000, 0.5, 0.5 }
@@ -68,14 +63,10 @@
             object[][] paramteters =
             {
                 new object[numParams]  {1, 100, 500, 2 * Math.Sqrt(problem.LowerBounds.Count), 10},
-                new object[numParams]  {1, 100, 500, 2 * Math.Sqrt(problem.LowerBounds.Count), 20},
                 new object[numParams] {1, 100, 500, 2 * Math.Sqrt(problem.LowerBounds.Count), 150 },
-                new object[numParams] {1, 100, 500, 2 * Math.Sqrt(problem.LowerBounds.Count), 200 },
                 new object[numParams] {2, 50, 250, Math.Sqrt(problem.LowerBounds.Count /(double)2), 10 },
-                new object[numParams] {2, 50, 250, Math.Sqrt(problem.LowerBounds.Count /(double)2), 20 },
                 new object[numParams] {2, 50, 250, Math.Sqrt(problem.LowerBounds.Count /(double)2), 150 },
-                new object[numParams] {2, 50, 250, Math.Sqrt(problem.LowerBounds.Count /(double)2), 200 },
-                new object[numParams] {2, 50, 250, Math.Sqrt(problem.LowerBounds.Count /(double)2), 300 }
+                new object[numParams] {2, 100, 250, Math.Sqrt(problem.LowerBounds.Count /(double)2), 200 }
             };
 
             GEMOptimizer opt = new GEMOptimizer();
@@ -91,15 +82,11 @@
 
             object[][] paramteters =
             {
-                new object[numParams] {100, 200, 20.0, 10, 30, 20.0},
-                new object[numParams] {20, 250, 20.0, 10, 50, 10.0},
+                new object[numParams] {100, 300, 20.0, 10, 30, 5.0},
+                new object[numParams] {20, 500, 20.0, 10, 50, 10.0},
                 new object[numParams] {20, 150, 20.0, 10, 50, 40.0},
-                new object[numParams] {20, 250, 5.0, 10, 50, 60.0},
-                new object[numParams] {20, 100, 20.0, 10, 50, 40.0},
-                new object[numParams] {10, 300, 20.0, 10, 50, 40.0},
-                new object[numParams] {10, 300, 10.0, 10, 50, 5.0},
-                new object[numParams] {30, 130, 20.0, 10, 50, 40.0 },
-                new object[numParams] {40, 125, 2.0, 10, 50, 40.0}
+                new object[numParams] {30, 130, 20.0, 10, 50, 9.0 },
+                new object[numParams] {40, 125, 2.0, 10, 50, 25.0}
             };
 
             FWOptimizer opt = new FWOptimizer();
@@ -243,6 +230,11 @@
                             controlsElem.AppendChild(controlElem);
                         }
 
+                        //logger.Info($"X1T = {resInfo["X1T"]}");
+                        //logger.Info($"X2T = {resInfo["X2T"]}");
+                        //logger.Info($"lambda1 = {resInfo["lambda1"]}");
+                        //logger.Info($"lambda2 = {resInfo["lambda2"]}");
+                        //logger.Info($"I1 = {resInfo["TargetV"]}");
                     }
                     catch (Exception exc)
                     {
@@ -321,11 +313,10 @@
             {
                 logger.Info($"Start solving N = {n}");
 
-                double step = (T_END - T_START) / T_N;
 
-                for (int i = 1; i <= T_N; i++)
+                for (int i = 0; i < TIMES.Length; i++)
                 {
-                    double TMax = step * i;
+                    double TMax = TIMES[i];
 
                     XmlDocument doc = new XmlDocument();
                     XmlDeclaration xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
