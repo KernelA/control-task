@@ -23,7 +23,10 @@
 
             double x1T = res[res.Length - 1][0], x2T = res[res.Length - 1][1];
 
-            return _Tmax + lambda1 * x1T * x1T + lambda2 * x2T * x2T;
+            X1T = x1T;
+            X2T = x2T;
+
+            return lambda1 * x1T * x1T + lambda2 * x2T * x2T;
         }
     }
 }

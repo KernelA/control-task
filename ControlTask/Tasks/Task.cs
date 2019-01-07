@@ -19,9 +19,10 @@
 
         protected double[] _valueofT;
 
+
         protected IReadOnlyList<double> _params;
 
-        protected const int _sizeOfRes = 100;
+        protected const int _sizeOfRes = 101;
 
         private static readonly double _a = 0.00007292123518 * Math.Sqrt(3);
 
@@ -29,15 +30,17 @@
 
         protected Vector<double> _x0, _y;
 
-        protected double _Tmax;
+        protected double _Tmax, _step;
 
-        public double[] LowerBounds => _lowerBounds;
+        public IReadOnlyList<double> LowerBounds => _lowerBounds;
 
-        public double[] UpperBounds => _upperBounds;
+        public IReadOnlyList<double> UpperBounds => _upperBounds;
 
-        IReadOnlyList<double> IConstrOptProblem<double, double>.LowerBounds => throw new NotImplementedException();
+        public double X1T { get; protected set; }
 
-        IReadOnlyList<double> IConstrOptProblem<double, double>.UpperBounds => throw new NotImplementedException();
+        public double X2T { get; protected set; }
+
+        public int NSwitches => _nSwitch;
 
         public ControlBaseTask(int N, double LowerBound, double UpperBound, double TMax, double x10, double x20)
         {
@@ -60,8 +63,8 @@
             _lowerBounds = Enumerable.Repeat(LowerBound, N * 2 + 2).ToArray();
             _upperBounds = Enumerable.Repeat(UpperBound, N * 2 + 2).ToArray();
 
-            _lowerBounds[_lowerBounds.Length - 2] = 1E-6;
-            _lowerBounds[_lowerBounds.Length - 1] = 1E-6;
+            _lowerBounds[_lowerBounds.Length - 2] = 10;
+            _lowerBounds[_lowerBounds.Length - 1] = 10;
 
             _upperBounds[_upperBounds.Length - 2] = 100;
             _upperBounds[_upperBounds.Length - 1] = 100;
@@ -71,20 +74,23 @@
             _x0[1] = x20;
 
             _y = CreateVector.Dense<double>(2);
-            _nSwitch = N;
-            double step = (double)TMax / N;
-            _Tmax = TMax;
-            _valueofT = new double[N];
 
-            for (int i = 0; i < N; i++)
+            _nSwitch = N;
+
+            _step = (double)TMax / _nSwitch;
+
+            _Tmax = TMax;
+            _valueofT = new double[_nSwitch + 1];
+
+            for (int i = 0; i < _valueofT.Length; i++)
             {
-                _valueofT[i] = i * step;
+                _valueofT[i] = i * _step;
             }
         }
 
         protected Vector<double> OdeFunction(double t, Vector<double> x)
         {
-            int u1IndexValue = 0;
+            int u1IndexValue = _nSwitch - 1;
 
             for (int i = 0; i < _nSwitch - 1; i++)
             {
@@ -96,7 +102,7 @@
             }
 
             _y[0] = _a * x[1] + _params[u1IndexValue];
-            _y[1] = -_a * x[0] + _params[2 * u1IndexValue];
+            _y[1] = -_a * x[0] + _params[_nSwitch + u1IndexValue];
 
             return _y;
         }

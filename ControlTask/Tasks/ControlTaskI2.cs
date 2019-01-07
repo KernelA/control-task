@@ -23,11 +23,14 @@
 
             double x1T = res[res.Length - 1][0], x2T = res[res.Length - 1][1];
 
+            X1T = x1T;
+            X2T = x2T;
+
             double integralValue = 0.0;
 
-            for (int i = 0; i < _valueofT.Length; i++)
+            for (int i = 0; i < _nSwitch; i++)
             {
-                integralValue += (Math.Abs(_params[i]) + Math.Abs(_params[2 * i])) * _valueofT[i];
+                integralValue += (Math.Abs(_params[i]) + Math.Abs(_params[_nSwitch + i])) * _step;
             }
 
             return integralValue + lambda1 * x1T * x1T + lambda2 * x2T * x2T;
