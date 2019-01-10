@@ -18,13 +18,11 @@
 
         }
 
-        public override double TargetFunction(IReadOnlyList<double> Point)
+        public override double TargetFunction(IReadOnlyList<double> Params)
         {
-            _params = Point;
+            double lambda1 = Params[Params.Count - 2], lambda2 = Params[Params.Count - 1];
 
-            double lambda1 = _params[_params.Count - 2], lambda2 = _params[_params.Count - 1];
-
-            var res = RungeKutta.FourthOrder(_x0, 0, _Tmax, _sizeOfRes, OdeFunction);
+            var res = _ode.Integrate(_valueofT, Params);
 
             double x1T = res[res.Length - 1][0], x2T = res[res.Length - 1][1];
 
@@ -35,7 +33,7 @@
 
             for (int i = 0; i < _nSwitch; i++)
             {
-                integralValue += (Math.Abs(_params[i]) + Math.Abs(_params[_nSwitch + i])) * _step;
+                integralValue += (Math.Abs(Params[i]) + Math.Abs(Params[_nSwitch + i])) * _step;
             }
 
             return integralValue + lambda1 * x1T * x1T + lambda2 * x2T * x2T;

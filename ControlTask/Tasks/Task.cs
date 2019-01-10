@@ -19,18 +19,11 @@
 
         protected double[] _valueofT;
 
-
-        protected IReadOnlyList<double> _params;
-
-        protected const int _sizeOfRes = 101;
-
-        private static readonly double _a = 0.00007292123518 * Math.Sqrt(3);
-
         protected int _nSwitch;
 
-        protected Vector<double> _x0, _y;
-
         protected double _Tmax, _step;
+
+        protected TargetODE _ode;
 
         public IReadOnlyList<double> LowerBounds => _lowerBounds;
 
@@ -69,12 +62,6 @@
             _upperBounds[_upperBounds.Length - 2] = 5000;
             _upperBounds[_upperBounds.Length - 1] = 5000;
 
-            _x0 = CreateVector.Dense<double>(2);
-            _x0[0] = x10;
-            _x0[1] = x20;
-
-            _y = CreateVector.Dense<double>(2);
-
             _nSwitch = N;
 
             _step = (double)TMax / _nSwitch;
@@ -86,26 +73,10 @@
             {
                 _valueofT[i] = i * _step;
             }
+
+            _ode = new TargetODE(x10, x20, _Tmax);
         }
 
-        protected Vector<double> OdeFunction(double t, Vector<double> x)
-        {
-            int u1IndexValue = _nSwitch - 1;
-
-            for (int i = 0; i < _nSwitch - 1; i++)
-            {
-                if(t >= _valueofT[i] && t < _valueofT[i + 1])
-                {
-                    u1IndexValue = i;
-                    break;
-                }
-            }
-
-            _y[0] = _a * x[1] + _params[u1IndexValue];
-            _y[1] = -_a * x[0] + _params[_nSwitch + u1IndexValue];
-
-            return _y;
-        }
 
         public abstract double TargetFunction(IReadOnlyList<double> Point);
     }
