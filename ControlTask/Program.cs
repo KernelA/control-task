@@ -21,8 +21,8 @@
         private const int MAX_RUN = 10;
         private const int U_LOWER = -10, U_UPPER = 10;
         private const double X10 = 0.5, X20 = 1;
-        private static readonly int[] SWITCHES = { 5, 8, 10 };
-        private static readonly double[] TIMES = { 1, 1.25, 1.35 };
+        private static readonly int[] SWITCHES = { 5, 8, 10};
+        private static readonly double[] TIMES = { 1, 1.5, 2};
 
         private static readonly Logger _logger = LogManager.GetLogger("Main");
 
@@ -175,12 +175,13 @@
 
             object[][] parameters =
             {
-                new object[numParams] {900, 380, 10.0, 10, 20, 5.0},
-                new object[numParams] {400, 1000, 15.0, 10, 40, 10.0},
-                new object[numParams] {250, 2000, 14.0, 10, 30, 40.0},
-                new object[numParams] {300, 800, 10.0, 10, 50, 9.0 },
-                new object[numParams] {600, 450, 5.0, 10, 50, 25.0}
+                new object[numParams] {250, 600, 5, 5, 20, 2.0},
+                new object[numParams] {250, 260, 15.0, 5, 20, 4.0},
+                new object[numParams] {250, 300, 10.0, 10, 30, 3.0},
+                new object[numParams] {250, 400, 10.0, 5, 20, 2.0 },
+                new object[numParams] {300, 900, 5.0, 10, 20, 1.5}
             };
+
 
             MOFWOptimizer opt = new MOFWOptimizer();
 
