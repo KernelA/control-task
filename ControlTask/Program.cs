@@ -18,7 +18,7 @@
 
     internal class Program
     {
-        private const int MAX_RUN = 10;
+        private const int MAX_RUN = 8;
         private const int U_LOWER = -10, U_UPPER = 10;
         private const double X10 = 0.5, X20 = 1;
         private static readonly int[] SWITCHES = { 5, 8, 10};
