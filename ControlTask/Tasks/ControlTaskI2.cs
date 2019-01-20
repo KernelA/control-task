@@ -3,19 +3,23 @@
     using System;
     using System.Collections.Generic;
     using System.Text;
+    using EOpt.Math;
 
     using MathNet.Numerics.OdeSolvers;
 
     class ControlTaskI2 : ControlBaseTask
     {
+        private KahanSum _sum;
+
         public ControlTaskI2(int N, double LowerBound, double UpperBound, double TMax, double x10, double x20) : base(N, LowerBound, UpperBound, TMax, x10, x20)
         {
-            _lowerBounds[_lowerBounds.Length - 2] = 500;
-            _lowerBounds[_lowerBounds.Length - 1] = 500;
+            _sum = new KahanSum();
+
+            _lowerBounds[_lowerBounds.Length - 2] = 10;
+            _lowerBounds[_lowerBounds.Length - 1] = 10;
 
             _upperBounds[_upperBounds.Length - 2] = 50_000;
             _upperBounds[_upperBounds.Length - 1] = 50_000;
-
         }
 
         public override double TargetFunction(IReadOnlyList<double> Params)
@@ -24,19 +28,18 @@
 
             var res = _ode.Integrate(_valueofT, Params);
 
-            double x1T = res[res.Length - 1][0], x2T = res[res.Length - 1][1];
+            X1T = res[res.Length - 1][0];
+            X2T = res[res.Length - 1][1];
 
-            X1T = x1T;
-            X2T = x2T;
-
-            double integralValue = 0.0;
+            _sum.SumResest();
 
             for (int i = 0; i < _nSwitch; i++)
             {
-                integralValue += (Math.Abs(Params[i]) + Math.Abs(Params[_nSwitch + i])) * _step;
+                _sum.Add(Math.Abs(Params[i]) * _step);
+                _sum.Add(Math.Abs(Params[_nSwitch + i]) * _step);
             }
 
-            return integralValue + lambda1 * x1T * x1T + lambda2 * x2T * x2T;
+            return _sum.Sum + lambda1 * X1T * X1T + lambda2 * X2T * X2T;
         }
     }
 }

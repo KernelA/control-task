@@ -56,7 +56,7 @@
             var _y = CreateVector.Dense<double>(2);
 
             _y[0] = _a * x[1] + _params[u1IndexValue];
-            _y[1] = -_a * x[0] + _params[_nSwitch + u1IndexValue];
+            _y[1] = -_a * x[0] + _params[u1IndexValue + _nSwitch];
 
             return _y;
         }
