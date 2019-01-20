@@ -58,20 +58,20 @@
             }
 
 
-            _lowerBounds = Enumerable.Repeat(LowerBound, N * 2 + 4).ToArray();
-            _upperBounds = Enumerable.Repeat(UpperBound, N * 2 + 4).ToArray();
+            _lowerBounds = Enumerable.Repeat(LowerBound, N * 2).ToArray();
+            _upperBounds = Enumerable.Repeat(UpperBound, N * 2).ToArray();
 
-            _lowerBounds[_lowerBounds.Length - 4] = 10;
-            _lowerBounds[_lowerBounds.Length - 3] = 10;
+            //_lowerBounds[_lowerBounds.Length - 4] = 10;
+            //_lowerBounds[_lowerBounds.Length - 3] = 10;
 
-            _upperBounds[_upperBounds.Length - 4] = 5000;
-            _upperBounds[_upperBounds.Length - 3] = 5000;
+            //_upperBounds[_upperBounds.Length - 4] = 5000;
+            //_upperBounds[_upperBounds.Length - 3] = 5000;
 
-            _lowerBounds[_lowerBounds.Length - 2] = 500;
-            _lowerBounds[_lowerBounds.Length - 1] = 500;
+            //_lowerBounds[_lowerBounds.Length - 2] = 500;
+            //_lowerBounds[_lowerBounds.Length - 1] = 500;
 
-            _upperBounds[_upperBounds.Length - 2] = 50_000;
-            _upperBounds[_upperBounds.Length - 1] = 50_000;
+            //_upperBounds[_upperBounds.Length - 2] = 50_000;
+            //_upperBounds[_upperBounds.Length - 1] = 50_000;
 
             _nSwitch = N;
 
@@ -100,7 +100,7 @@
                 _isOdeSolved = true;
             }
             
-            return Params[Params.Count - 4] * X1T * X1T + Params[Params.Count - 3] * X2T * X2T;
+            return 10.6725 * X1T * X1T + 12.4662 * X2T * X2T;
         }
 
         private double I2(IReadOnlyList<double> Params)
@@ -120,7 +120,7 @@
                 integralValue += (Math.Abs(Params[i]) + Math.Abs(Params[_nSwitch + i])) * _step;
             }
 
-            return integralValue + Params[Params.Count - 2] * X1T * X1T + Params[Params.Count - 1] * X2T * X2T;
+            return integralValue + 4479.012 * X1T * X1T + 575.4493 * X2T * X2T;
         }
 
 
