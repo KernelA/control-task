@@ -19,10 +19,14 @@
     internal class Program
     {
         private const int MAX_RUN = 8;
+
         private const int U_LOWER = -10, U_UPPER = 10;
+
         private const double X10 = 0.5, X20 = 1;
-        private static readonly int[] SWITCHES = { 5, 8, 10};
-        private static readonly double[] TIMES = { 1, 1.5, 2};
+
+        private static readonly int[] SWITCHES = { 8, 10 };
+
+        private static readonly double[] TIMES = { 1, 1.5, 2, 4};
 
         private static readonly Logger _logger = LogManager.GetLogger("Main");
 
@@ -104,11 +108,11 @@
 
             object[][] paramteters =
             {
-                new object[numParams] {100, 300, 20.0, 10, 30, 5.0},
-                new object[numParams] {20, 500, 20.0, 10, 50, 10.0},
-                new object[numParams] {20, 150, 20.0, 10, 50, 40.0},
+                new object[numParams] {100, 300, 20.0, 10, 30, 2.5},
+                new object[numParams] {20, 500, 20.0, 10, 50, 1.0},
+                new object[numParams] {20, 150, 20.0, 10, 50, 2.0},
                 new object[numParams] {30, 130, 20.0, 10, 50, 9.0 },
-                new object[numParams] {40, 125, 2.0, 10, 50, 25.0}
+                new object[numParams] {40, 125, 2.0, 10, 50, 0.9}
             };
 
             FWOptimizer opt = new FWOptimizer();
@@ -153,20 +157,20 @@
 
                 if (!Directory.Exists(_pathToDir))
                 {
-                    Console.WriteLine($"'path' does not exist.");
+                    Console.WriteLine($"'{_pathToDir}' does not exist.");
                     return;
                 }
             }
 
-            //Task task1 = new Task(taskType => SolveTask((ProblemType)taskType), ProblemType.I1);
-            //Task task2 = new Task(taskType => SolveTask((ProblemType)taskType), ProblemType.I2);
+            Task task1 = new Task(taskType => SolveTask((ProblemType)taskType), ProblemType.I1);
+            Task task2 = new Task(taskType => SolveTask((ProblemType)taskType), ProblemType.I2);
 
-            //task1.Start();
-            //task2.Start();
+            task1.Start();
+            task2.Start();
 
-            //Task.WaitAll(task1, task2);
+            Task.WaitAll(task1, task2);
 
-            SolveMOTask();
+            //SolveMOTask();
         }
 
         private static void MOFWOptimize(MOControlTask problem, Logger logger, XmlWriter XmlWriter)
