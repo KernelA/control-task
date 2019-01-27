@@ -15,11 +15,11 @@
         {
             _sum = new KahanSum();
 
-            _lowerBounds[_lowerBounds.Length - 2] = 10;
-            _lowerBounds[_lowerBounds.Length - 1] = 10;
+            _lowerBounds[_lowerBounds.Length - 2] = 1000;
+            _lowerBounds[_lowerBounds.Length - 1] = 1000;
 
-            _upperBounds[_upperBounds.Length - 2] = 50_000;
-            _upperBounds[_upperBounds.Length - 1] = 50_000;
+            _upperBounds[_upperBounds.Length - 2] = 25_000;
+            _upperBounds[_upperBounds.Length - 1] = 25_000;
         }
 
         public override double TargetFunction(IReadOnlyList<double> Params)
