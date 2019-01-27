@@ -24,9 +24,9 @@
 
         private const double X10 = 0.5, X20 = 1;
 
-        private static readonly int[] SWITCHES = { 8, 10 };
+        private static readonly int[] SWITCHES = { 10, 15, 20 };
 
-        private static readonly double[] TIMES = { 1, 1.5, 2, 4};
+        private static readonly double[] TIMES = { 2 };
 
         private static readonly Logger _logger = LogManager.GetLogger("Main");
 
@@ -109,13 +109,14 @@
             object[][] paramteters =
             {
                 new object[numParams] {100, 300, 20.0, 10, 30, 2.5},
-                new object[numParams] {20, 500, 20.0, 10, 50, 1.0},
+                new object[numParams] {20, 900, 20.0, 10, 50, 1.0},
                 new object[numParams] {20, 150, 20.0, 10, 50, 2.0},
                 new object[numParams] {30, 130, 20.0, 10, 50, 9.0 },
                 new object[numParams] {40, 125, 2.0, 10, 50, 0.9}
             };
 
             FWOptimizer opt = new FWOptimizer();
+
 
             XmlElement fwElem = doc.CreateElement("FW");
             doc.DocumentElement.AppendChild(fwElem);
@@ -132,8 +133,8 @@
                 new object[numParams]  {1, 100, 500, 2 * Math.Sqrt(problem.LowerBounds.Count), 10},
                 new object[numParams] {1, 100, 500, 2 * Math.Sqrt(problem.LowerBounds.Count), 150 },
                 new object[numParams] {2, 50, 250, Math.Sqrt(problem.LowerBounds.Count /(double)2), 10 },
-                new object[numParams] {2, 50, 250, Math.Sqrt(problem.LowerBounds.Count /(double)2), 150 },
-                new object[numParams] {2, 100, 250, Math.Sqrt(problem.LowerBounds.Count /(double)2), 200 }
+                new object[numParams] {2, 50, 900, Math.Sqrt(problem.LowerBounds.Count /(double)2), 150 },
+                new object[numParams] {2, 100, 400, Math.Sqrt(problem.LowerBounds.Count /(double)2), 200 }
             };
 
             GEMOptimizer opt = new GEMOptimizer();
