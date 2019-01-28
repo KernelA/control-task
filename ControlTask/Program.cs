@@ -40,35 +40,30 @@
 
         public static (double Lambda1, double Lambda2) GetLambdas(ProblemType Problem, int NSwitches)
         {
-            double lambda1, lambda2;
+            int i = 0;
 
             switch (Problem)
             {
                 case ProblemType.I1:
                     {
-                        if (!_lambdas[0].ContainsKey(NSwitches))
-                        {
-                            throw new ArgumentException($"{NSwitches} not in dictionary.", nameof(NSwitches));
-                        }
-
-                        (lambda1, lambda2) = _lambdas[0][NSwitches]; 
+                        i = 0;
                         break;
                     }
                 case ProblemType.I2:
                     {
-                        if (!_lambdas[1].ContainsKey(NSwitches))
-                        {
-                            throw new ArgumentException($"{NSwitches} not in dictionary.", nameof(NSwitches));
-                        }
-
-                        (lambda1, lambda2) = _lambdas[1][NSwitches];
+                        i = 1;
                         break;
                     }
                 default:
                     throw new ArgumentException("An invalid type of the task.", nameof(Problem));
             }
 
-            return (lambda1, lambda2);
+            if (!_lambdas[i].ContainsKey(NSwitches))
+            {
+                throw new ArgumentException($"{NSwitches} not in dictionary.", nameof(NSwitches));
+            }
+
+            return _lambdas[i][NSwitches];
         }
     }
 
