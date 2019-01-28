@@ -11,11 +11,15 @@
     using MathNet.Numerics.OdeSolvers;
     using MathNet.Numerics.LinearAlgebra;
 
+    using EOpt.Math;
+
     class MOControlTask : IMOOptProblem
     {
         private const int OBJ_COUNT = 2;
 
         private double[] _lowerBounds, _upperBounds, _targetValues, _valueofT;
+
+        private double _lambda1, _lambda2, _lambda3, _lambda4;
 
         private TargetODE _ode;
 
@@ -39,8 +43,9 @@
 
         public int NSwitches => _nSwitch;
 
+        private KahanSum _sum;
 
-        public MOControlTask(int N, double LowerBound, double UpperBound, double TMax, double x10, double x20)
+        public MOControlTask(int N, double LowerBound, double UpperBound, double TMax, double x10, double x20, double lambda1, double lambda2, double lambda3, double lambad4)
         {
             if (N < 2)
             {
@@ -61,17 +66,10 @@
             _lowerBounds = Enumerable.Repeat(LowerBound, N * 2).ToArray();
             _upperBounds = Enumerable.Repeat(UpperBound, N * 2).ToArray();
 
-            //_lowerBounds[_lowerBounds.Length - 4] = 10;
-            //_lowerBounds[_lowerBounds.Length - 3] = 10;
-
-            //_upperBounds[_upperBounds.Length - 4] = 5000;
-            //_upperBounds[_upperBounds.Length - 3] = 5000;
-
-            //_lowerBounds[_lowerBounds.Length - 2] = 500;
-            //_lowerBounds[_lowerBounds.Length - 1] = 500;
-
-            //_upperBounds[_upperBounds.Length - 2] = 50_000;
-            //_upperBounds[_upperBounds.Length - 1] = 50_000;
+            _lambda1 = lambda1;
+            _lambda2 = lambda2;
+            _lambda3 = lambda3;
+            _lambda4 = lambad4;
 
             _nSwitch = N;
 
@@ -88,6 +86,8 @@
             _ode = new TargetODE(x10, x20, _Tmax);
 
             _targetValues = new double[OBJ_COUNT];
+
+            _sum = new KahanSum();
         }
 
         private double I1(IReadOnlyList<double> Params)
@@ -99,8 +99,19 @@
                 X2T = _odeSolution[_odeSolution.Length - 1][1];
                 _isOdeSolved = true;
             }
-            
-            return 10.6725 * X1T * X1T + 12.4662 * X2T * X2T;
+
+            _sum.SumResest();
+
+            for (int i = 0; i < _nSwitch; i++)
+            {
+                _sum.Add(Params[i] * Params[i] * _step);
+                _sum.Add(Params[i + _nSwitch] * Params[i + _nSwitch] * _step);
+            }
+
+            _sum.Add(_lambda1 * X1T * X1T);
+            _sum.Add(_lambda2 * X2T * X2T);
+
+            return _sum.Sum;
         }
 
         private double I2(IReadOnlyList<double> Params)
@@ -113,14 +124,17 @@
                 _isOdeSolved = true;
             }
 
-            double integralValue = 0.0;
+            _sum.SumResest();
 
             for (int i = 0; i < _nSwitch; i++)
             {
-                integralValue += (Math.Abs(Params[i]) + Math.Abs(Params[_nSwitch + i])) * _step;
+                _sum.Add((Math.Abs(Params[i]) + Math.Abs(Params[_nSwitch + i])) * _step);
             }
 
-            return integralValue + 4479.012 * X1T * X1T + 575.4493 * X2T * X2T;
+            _sum.Add(_lambda3 * X1T * X1T);
+            _sum.Add(_lambda4 * X2T * X2T);
+
+            return _sum.Sum;
         }
 
 
