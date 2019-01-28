@@ -16,6 +16,63 @@
 
     internal enum ProblemType { I1, I2 };
 
+    static class LambdasTask
+    {
+        private static Dictionary<int, (double, double)>[] _lambdas;
+
+        static LambdasTask()
+        {
+            _lambdas = new Dictionary<int, (double, double)>[2];
+
+            for (int i = 0; i < _lambdas.Length; i++)
+            {
+                _lambdas[i] = new Dictionary<int, (double, double)>(3);
+            }
+
+            _lambdas[0].Add(10, (16215.9283942536, 6559.76433224536));
+            _lambdas[0].Add(15, (2029.88633967088, 855.720650027942));
+            _lambdas[0].Add(20, (5802.42576735998, 2070.91513343537));
+
+            _lambdas[1].Add(10, (1259.59837301801, 9970.77253218935));
+            _lambdas[1].Add(15, (2796.6424850111, 1655.35295191816));
+            _lambdas[1].Add(20, (2247.82160093308, 7496.03408111423));
+        }
+
+        public static (double Lambda1, double Lambda2) GetLambdas(ProblemType Problem, int NSwitches)
+        {
+            double lambda1, lambda2;
+
+            switch (Problem)
+            {
+                case ProblemType.I1:
+                    {
+                        if (!_lambdas[0].ContainsKey(NSwitches))
+                        {
+                            throw new ArgumentException($"{NSwitches} not in dictionary.", nameof(NSwitches));
+                        }
+
+                        (lambda1, lambda2) = _lambdas[0][NSwitches]; 
+                        break;
+                    }
+                case ProblemType.I2:
+                    {
+                        if (!_lambdas[1].ContainsKey(NSwitches))
+                        {
+                            throw new ArgumentException($"{NSwitches} not in dictionary.", nameof(NSwitches));
+                        }
+
+                        (lambda1, lambda2) = _lambdas[1][NSwitches];
+                        break;
+                    }
+                default:
+                    throw new ArgumentException("An invalid type of the task.", nameof(Problem));
+            }
+
+            return (lambda1, lambda2);
+        }
+    }
+
+
     internal class Program
     {
         private const int MAX_RUN = 10;
@@ -184,7 +241,7 @@
                 new object[numParams] {250, 260, 15.0, 5, 20, 4.0},
                 new object[numParams] {250, 300, 10.0, 10, 30, 3.0},
                 new object[numParams] {250, 400, 10.0, 5, 20, 2.0 },
-                new object[numParams] {300, 900, 5.0, 10, 20, 1.5}
+                new object[numParams] {350, 1000, 5.0, 10, 20, 1.5}
             };
 
 
@@ -427,11 +484,13 @@
                 MaxDegreeOfParallelism = 2
              };
 
-            Parallel.ForEach(Enumerable.Range(0, TIMES.Length).Zip(TIMES, (i, t) => (Tmax: t, Num: i)), options, SolveMOTaskWithT);
+            Parallel.ForEach(SWITCHES, options, SolveMOTaskWithT);
         }
 
-        private static void SolveMOTaskWithT((double Tmax, int i) param)
+        private static void SolveMOTaskWithT(int NSwitches)
         {
+            int n = NSwitches;
+
             string dirPath = Path.Combine(_pathToDir, "MOTask");
 
             if (!Directory.Exists(dirPath))
@@ -442,15 +501,19 @@
             MappedDiagnosticsContext.Set("id", $"_{Thread.CurrentThread.ManagedThreadId}_");
             MappedDiagnosticsContext.Set("problem", "_mo-problem_");
 
-            foreach (var n in SWITCHES)
+            foreach (var (i, Tmax) in Enumerable.Range(0, TIMES.Length).Zip(TIMES, (i, tmax) => (i, tmax)))
             {
-                string pathToFile = Path.Combine(_pathToDir, dirPath, $"res_{n}_{param.i}.xml");
+                string pathToFile = Path.Combine(_pathToDir, dirPath, $"res_{n}_{i}.xml");
 
                 _logger.Info($"Open a xml file. '{pathToFile}'");
 
+
+                (double lambda1, double lambda2) = LambdasTask.GetLambdas(ProblemType.I1, n);
+                (double lambda3, double lambda4) = LambdasTask.GetLambdas(ProblemType.I2, n);
+
                 using (XmlWriter writer = XmlWriter.Create(pathToFile))
                 {
-                    MOControlTask problem = new MOControlTask(n, U_LOWER, U_UPPER, param.Tmax, X10, X20);
+                    MOControlTask problem = new MOControlTask(n, U_LOWER, U_UPPER, Tmax, X10, X20, lambda1, lambda2, lambda3, lambda4);
 
                     _logger.Info($"Start solving N = {n}");
 
@@ -461,7 +524,7 @@
                         Dictionary<string, string> problemDesc = new Dictionary<string, string>
                         {
                             ["Name"] = "MOProblem",
-                            ["Tmax"] = param.Tmax.ToString(),
+                            ["Tmax"] = Tmax.ToString(),
                             ["NSwitches"] = n.ToString(),
                             ["ULower"] = U_LOWER.ToString(),
                             ["UUpper"] = U_UPPER.ToString(),
@@ -475,7 +538,7 @@
                         }
                     }
 
-                    _logger.Info($"Time T = {param.Tmax}");
+                    _logger.Info($"Time T = {Tmax}");
                     _logger.Info($"Creating problem. Type is MOProblem");
                     _logger.Info($"Start solving with MOFW.");
 
