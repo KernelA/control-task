@@ -163,15 +163,15 @@
                 }
             }
 
-            Task task1 = new Task(taskType => SolveTask((ProblemType)taskType), ProblemType.I1);
-            Task task2 = new Task(taskType => SolveTask((ProblemType)taskType), ProblemType.I2);
+            //Task task1 = new Task(taskType => SolveTask((ProblemType)taskType), ProblemType.I1);
+            //Task task2 = new Task(taskType => SolveTask((ProblemType)taskType), ProblemType.I2);
 
-            task1.Start();
-            task2.Start();
+            //task1.Start();
+            //task2.Start();
 
-            Task.WaitAll(task1, task2);
+            //Task.WaitAll(task1, task2);
 
-            //SolveMOTask();
+            SolveMOTask();
         }
 
         private static void MOFWOptimize(MOControlTask problem, Logger logger, XmlWriter XmlWriter)
@@ -298,6 +298,7 @@
                     XmlWriter.WriteEndElement();
                 }
 
+                XmlWriter.WriteEndElement();
                 XmlWriter.WriteEndElement();
             }
 
@@ -445,7 +446,7 @@
             {
                 string pathToFile = Path.Combine(_pathToDir, dirPath, $"res_{n}_{param.i}.xml");
 
-                _logger.Info("Open a xml file.");
+                _logger.Info($"Open a xml file. '{pathToFile}'");
 
                 using (XmlWriter writer = XmlWriter.Create(pathToFile))
                 {
