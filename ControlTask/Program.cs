@@ -232,10 +232,10 @@
 
             object[][] parameters =
             {
-                new object[numParams] {250, 600, 5, 5, 20, 2.0},
-                new object[numParams] {250, 260, 15.0, 5, 20, 4.0},
-                new object[numParams] {250, 300, 10.0, 10, 30, 3.0},
-                new object[numParams] {250, 400, 10.0, 5, 20, 2.0 },
+                new object[numParams] {200, 2000, 5, 5, 20, 2.0},
+                new object[numParams] {250, 900, 15.0, 5, 20, 4.0},
+                new object[numParams] {250, 900, 10.0, 10, 30, 3.0},
+                new object[numParams] {400, 600, 10.0, 5, 20, 2.0 },
                 new object[numParams] {350, 1000, 5.0, 10, 20, 1.5}
             };
 
