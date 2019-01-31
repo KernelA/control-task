@@ -29,13 +29,13 @@
                 _lambdas[i] = new Dictionary<int, (double, double)>(3);
             }
 
-            _lambdas[0].Add(10, (16215.9283942536, 6559.76433224536));
-            _lambdas[0].Add(15, (2029.88633967088, 855.720650027942));
-            _lambdas[0].Add(20, (5802.42576735998, 2070.91513343537));
+            _lambdas[0].Add(8, (26318.7439760013, 11915.7518916247));
+            _lambdas[0].Add(10, (2432.68352872262, 30435.8281212343));
+            _lambdas[0].Add(15, (21102.1391377272, 11433.7534827968));
 
-            _lambdas[1].Add(10, (1259.59837301801, 9970.77253218935));
-            _lambdas[1].Add(15, (2796.6424850111, 1655.35295191816));
-            _lambdas[1].Add(20, (2247.82160093308, 7496.03408111423));
+            _lambdas[1].Add(8, (4552.6126689278, 1812.19580848038));
+            _lambdas[1].Add(10, (1109.19969907866, 525.950390067471));
+            _lambdas[1].Add(15, (2933.1810049497, 1466.59918662909));
         }
 
         public static (double Lambda1, double Lambda2) GetLambdas(ProblemType Problem, int NSwitches)
@@ -78,7 +78,7 @@
 
         private static readonly int[] SWITCHES = { 8, 10, 15};
 
-        private static readonly double[] TIMES = { 1.25, 1.5 };
+        private static readonly double[] TIMES = { 1.25 };
 
         private static readonly Logger _logger = LogManager.GetLogger("Main");
 
@@ -215,15 +215,15 @@
                 }
             }
 
-            Task task1 = new Task(taskType => SolveTask((ProblemType)taskType), ProblemType.I1);
-            Task task2 = new Task(taskType => SolveTask((ProblemType)taskType), ProblemType.I2);
+            //Task task1 = new Task(taskType => SolveTask((ProblemType)taskType), ProblemType.I1);
+            //Task task2 = new Task(taskType => SolveTask((ProblemType)taskType), ProblemType.I2);
 
-            task1.Start();
-            task2.Start();
+            //task1.Start();
+            //task2.Start();
 
-            Task.WaitAll(task1, task2);
+            //Task.WaitAll(task1, task2);
 
-            // SolveMOTask();
+            SolveMOTask();
         }
 
         private static void MOFWOptimize(MOControlTask problem, Logger logger, XmlWriter XmlWriter)
@@ -232,11 +232,12 @@
 
             object[][] parameters =
             {
-                new object[numParams] {200, 2000, 5, 5, 20, 2.0},
-                new object[numParams] {250, 900, 15.0, 5, 20, 4.0},
-                new object[numParams] {250, 900, 10.0, 10, 30, 3.0},
-                new object[numParams] {400, 600, 10.0, 5, 20, 2.0 },
-                new object[numParams] {350, 1000, 5.0, 10, 20, 1.5}
+                new object[numParams] {100, 2000, 5, 5, 20, 2.0},
+                new object[numParams] {250, 500, 15.0, 5, 20, 4.0},
+                new object[numParams] {250, 500, 10.0, 10, 30, 3.0},
+                new object[numParams] {400, 300, 10.0, 5, 20, 2.0 },
+                new object[numParams] {350, 1000, 5.0, 10, 20, 0.5},
+                new object[numParams] {190, 1000, 5.0, 10, 20, 1.5}
             };
 
 
@@ -476,7 +477,7 @@
         {
             ParallelOptions options = new ParallelOptions()
             {
-                MaxDegreeOfParallelism = 2
+                MaxDegreeOfParallelism = 3
              };
 
             Parallel.ForEach(SWITCHES, options, SolveMOTaskWithT);
