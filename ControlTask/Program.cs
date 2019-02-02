@@ -78,7 +78,7 @@
 
         private static readonly int[] SWITCHES = { 8, 10, 15};
 
-        private static readonly double[] TIMES = { 1.25 };
+        private static readonly double[] TIMES = { 1.5 };
 
         private static readonly Logger _logger = LogManager.GetLogger("Main");
 
