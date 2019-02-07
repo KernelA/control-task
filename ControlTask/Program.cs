@@ -72,7 +72,7 @@
     {
         private const int MAX_RUN = 10;
 
-        private const int U_LOWER = -10, U_UPPER = 10;
+        private const int U_LOWER = -5, U_UPPER = 5;
 
         private const double X10 = 0.5, X20 = 1;
 
@@ -184,7 +184,7 @@
             {
                 new object[numParams]  {1, 100, 500, 2 * Math.Sqrt(problem.LowerBounds.Count), 10},
                 new object[numParams] {1, 100, 500, 2 * Math.Sqrt(problem.LowerBounds.Count), 150 },
-                new object[numParams] {2, 50, 250, Math.Sqrt(problem.LowerBounds.Count /(double)2), 10 },
+                new object[numParams] {2, 75, 250, Math.Sqrt(problem.LowerBounds.Count /(double)2), 10 },
                 new object[numParams] {2, 50, 900, Math.Sqrt(problem.LowerBounds.Count /(double)2), 150 },
                 new object[numParams] {2, 100, 600, Math.Sqrt(problem.LowerBounds.Count /(double)2), 200 }
             };
@@ -215,15 +215,15 @@
                 }
             }
 
-            //Task task1 = new Task(taskType => SolveTask((ProblemType)taskType), ProblemType.I1);
-            //Task task2 = new Task(taskType => SolveTask((ProblemType)taskType), ProblemType.I2);
+            Task task1 = new Task(taskType => SolveTask((ProblemType)taskType), ProblemType.I1);
+            Task task2 = new Task(taskType => SolveTask((ProblemType)taskType), ProblemType.I2);
 
-            //task1.Start();
-            //task2.Start();
+            task1.Start();
+            task2.Start();
 
-            //Task.WaitAll(task1, task2);
+            Task.WaitAll(task1, task2);
 
-            SolveMOTask();
+            //SolveMOTask();
         }
 
         private static void MOFWOptimize(MOControlTask problem, Logger logger, XmlWriter XmlWriter)
