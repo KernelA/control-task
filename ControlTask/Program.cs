@@ -14,9 +14,7 @@
 
     using NLog;
 
-    internal enum ProblemType { I1, I2 };
-
-    static class LambdasTask
+    internal static class LambdasTask
     {
         private static Dictionary<int, (double, double)>[] _lambdas;
 
@@ -29,13 +27,13 @@
                 _lambdas[i] = new Dictionary<int, (double, double)>(3);
             }
 
-            _lambdas[0].Add(8, (26318.7439760013, 11915.7518916247));
-            _lambdas[0].Add(10, (2432.68352872262, 30435.8281212343));
-            _lambdas[0].Add(15, (21102.1391377272, 11433.7534827968));
+            _lambdas[0].Add(8, (11247.6302753864, 11143.217997764));
+            _lambdas[0].Add(10, (22621.5610681351, 18165.9891931346));
+            _lambdas[0].Add(15, (18420.4788767144, 10203.7952768332));
 
-            _lambdas[1].Add(8, (4552.6126689278, 1812.19580848038));
-            _lambdas[1].Add(10, (1109.19969907866, 525.950390067471));
-            _lambdas[1].Add(15, (2933.1810049497, 1466.59918662909));
+            _lambdas[1].Add(8, (2555.43922113448, 4311.17267957873));
+            _lambdas[1].Add(10, (4207.31058609648, 1248.40435098767));
+            _lambdas[1].Add(15, (4096.36454659811, 2773.91241130186));
         }
 
         public static (double Lambda1, double Lambda2) GetLambdas(ProblemType Problem, int NSwitches)
@@ -67,7 +65,6 @@
         }
     }
 
-
     internal class Program
     {
         private const int MAX_RUN = 10;
@@ -76,12 +73,10 @@
 
         private const double X10 = 0.5, X20 = 1;
 
-        private static readonly int[] SWITCHES = { 8, 10, 15};
+        private static readonly Logger _logger = LogManager.GetLogger("Main");
+        private static readonly int[] SWITCHES = { 8, 10, 15 };
 
         private static readonly double[] TIMES = { 1.5 };
-
-        private static readonly Logger _logger = LogManager.GetLogger("Main");
-
         private static string _pathToDir = String.Empty;
 
         private static void BBBCOptimize(ControlBaseTask problem, Logger logger, XmlDocument doc)
@@ -169,7 +164,6 @@
 
             FWOptimizer opt = new FWOptimizer();
 
-
             XmlElement fwElem = doc.CreateElement("FW");
             doc.DocumentElement.AppendChild(fwElem);
 
@@ -215,15 +209,15 @@
                 }
             }
 
-            Task task1 = new Task(taskType => SolveTask((ProblemType)taskType), ProblemType.I1);
-            Task task2 = new Task(taskType => SolveTask((ProblemType)taskType), ProblemType.I2);
+            //Task task1 = new Task(taskType => SolveTask((ProblemType)taskType), ProblemType.I1);
+            //Task task2 = new Task(taskType => SolveTask((ProblemType)taskType), ProblemType.I2);
 
-            task1.Start();
-            task2.Start();
+            //task1.Start();
+            //task2.Start();
 
-            Task.WaitAll(task1, task2);
+            //Task.WaitAll(task1, task2);
 
-            //SolveMOTask();
+            SolveMOTask();
         }
 
         private static void MOFWOptimize(MOControlTask problem, Logger logger, XmlWriter XmlWriter)
@@ -232,28 +226,22 @@
 
             object[][] parameters =
             {
-                new object[numParams] {100, 2000, 5, 5, 20, 2.0},
-                new object[numParams] {250, 500, 15.0, 5, 20, 4.0},
-                new object[numParams] {250, 500, 10.0, 10, 30, 3.0},
-                new object[numParams] {400, 300, 10.0, 5, 20, 2.0 },
+                new object[numParams] {150, 2000, 5, 5, 20, 0.25},
+                new object[numParams] {250, 500, 15.0, 5, 20, 0.9},
+                new object[numParams] {250, 500, 10.0, 10, 30, 0.8},
+                new object[numParams] {400, 300, 10.0, 5, 20, 1.2},
                 new object[numParams] {350, 1000, 5.0, 10, 20, 0.5},
-                new object[numParams] {190, 1000, 5.0, 10, 20, 1.5}
+                new object[numParams] {200, 1000, 5.0, 10, 20, 0.6}
             };
-
 
             MOFWOptimizer opt = new MOFWOptimizer();
 
             XmlWriter.WriteStartElement("MOFW");
-            
 
             Dictionary<string, string> resInfo = new Dictionary<string, string>()
             {
                 ["TargetV1"] = "",
                 ["TargetV2"] = "",
-                ["lambda1"] = "",
-                ["lambda2"] = "",
-                ["lambda3"] = "",
-                ["lambda4"] = "",
                 ["X1T"] = "",
                 ["X2T"] = ""
             };
@@ -300,10 +288,6 @@
                             problem.TargetFunction(point.Point);
                             resInfo["TargetV1"] = point.Objs[0].ToString();
                             resInfo["TargetV2"] = point.Objs[1].ToString();
-                            resInfo["lambda1"] = point.Point[point.Point.Count - 4].ToString();
-                            resInfo["lambda2"] = point.Point[point.Point.Count - 3].ToString();
-                            resInfo["lambda3"] = point.Point[point.Point.Count - 2].ToString();
-                            resInfo["lambda4"] = point.Point[point.Point.Count - 1].ToString();
                             resInfo["X1T"] = problem.X1T.ToString();
                             resInfo["X2T"] = problem.X2T.ToString();
 
@@ -321,7 +305,7 @@
 
                         XmlWriter.WriteStartElement("Controls");
 
-                        foreach(var point in opt.ParetoFront)
+                        foreach (var point in opt.ParetoFront)
                         {
                             XmlWriter.WriteStartElement("Control");
 
@@ -337,7 +321,6 @@
                             XmlWriter.WriteEndElement();
                         }
                         XmlWriter.WriteEndElement();
-                      
                     }
                     catch (Exception exc)
                     {
@@ -478,7 +461,7 @@
             ParallelOptions options = new ParallelOptions()
             {
                 MaxDegreeOfParallelism = 3
-             };
+            };
 
             Parallel.ForEach(SWITCHES, options, SolveMOTaskWithT);
         }
@@ -503,7 +486,6 @@
 
                 _logger.Info($"Open a xml file. '{pathToFile}'");
 
-
                 (double lambda1, double lambda2) = LambdasTask.GetLambdas(ProblemType.I1, n);
                 (double lambda3, double lambda4) = LambdasTask.GetLambdas(ProblemType.I2, n);
 
@@ -525,7 +507,11 @@
                             ["ULower"] = U_LOWER.ToString(),
                             ["UUpper"] = U_UPPER.ToString(),
                             ["X10"] = X10.ToString(),
-                            ["X20"] = X20.ToString()
+                            ["X20"] = X20.ToString(),
+                            ["lambda1"] = lambda1.ToString(),
+                            ["lambda2"] = lambda2.ToString(),
+                            ["lambda3"] = lambda3.ToString(),
+                            ["lambda4"] = lambda4.ToString()
                         };
 
                         foreach (var name in problemDesc)
@@ -549,7 +535,6 @@
 
             MappedDiagnosticsContext.Remove("id");
             MappedDiagnosticsContext.Remove("problem");
-
         }
 
         private static void SolveTask(ProblemType Problem)
@@ -640,5 +625,5 @@
         }
     }
 
-    
+    internal enum ProblemType { I1, I2 };
 }
