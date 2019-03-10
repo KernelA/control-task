@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TestMOTasks": {
+      "commandName": "Project",
+      "commandLineArgs": "ZDT1 ZDT3  --max-run 10 -d 30 -o \"C:\\Users\\ALEX K\\Desktop\\Master_task\\ControlTask\\TestMOTasks\\bin\\Release\\netcoreapp2.1\\Result\""
+    }
+  }
+}
