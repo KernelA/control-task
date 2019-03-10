@@ -342,3 +342,5 @@ healthchecksdb
 
 # Temp results
 [Rr]es/
+
+!LocalNuget/*.nupkg

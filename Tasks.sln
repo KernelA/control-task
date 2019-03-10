@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlTask", "ControlTask\ControlTask.csproj", "{8037CEF9-CB51-454E-85E3-7AC8CE813DCA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControlTask", "ControlTask\ControlTask.csproj", "{8037CEF9-CB51-454E-85E3-7AC8CE813DCA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestMOTasks", "TestMOTasks\TestMOTasks.csproj", "{B453768B-E9E6-4342-9889-35CFE1EB81C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{8037CEF9-CB51-454E-85E3-7AC8CE813DCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8037CEF9-CB51-454E-85E3-7AC8CE813DCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8037CEF9-CB51-454E-85E3-7AC8CE813DCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B453768B-E9E6-4342-9889-35CFE1EB81C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B453768B-E9E6-4342-9889-35CFE1EB81C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B453768B-E9E6-4342-9889-35CFE1EB81C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B453768B-E9E6-4342-9889-35CFE1EB81C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
