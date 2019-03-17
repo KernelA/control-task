@@ -1,18 +1,10 @@
 ﻿namespace MOTestTasks.Problems
 {
-    using System;
     using System.Collections.Generic;
-    using System.Text;
     using System.Linq;
 
-    using EOpt.Math.Optimization.MOOpt;
-
-    abstract class BaseZDT : BaseProblem
+    internal abstract class BaseZDT : BaseProblem
     {
-        public BaseZDT(int Dim, string Name) : base(2, Name, Enumerable.Repeat(0.0, Dim).ToArray(), Enumerable.Repeat(1.0, Dim).ToArray())
-        {
-        }
-
         protected virtual double G(IReadOnlyList<double> Point)
         {
             double sum = 0;
@@ -23,6 +15,10 @@
             }
 
             return 1 + 9 / (_lowerBounds.Length - 1) * sum;
+        }
+
+        public BaseZDT(int Dim, string Name) : base(2, Name, Enumerable.Repeat(0.0, Dim).ToArray(), Enumerable.Repeat(1.0, Dim).ToArray())
+        {
         }
     }
 }

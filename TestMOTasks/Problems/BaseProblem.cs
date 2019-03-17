@@ -3,10 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
-    abstract class BaseProblem : INamedMOProblem
+    internal abstract class BaseProblem : INamedMOProblem
     {
         protected double[] _lowerBounds, _upperBounds;
 
@@ -14,9 +12,9 @@
 
         public IReadOnlyList<double> LowerBounds => _lowerBounds;
 
-        public IReadOnlyList<double> UpperBounds => _upperBounds;
-
         public string Name { get; private set; }
+
+        public IReadOnlyList<double> UpperBounds => _upperBounds;
 
         public BaseProblem(int CountObjs, string Name, IReadOnlyCollection<double> LowerBounds, IReadOnlyCollection<double> UpperBounds)
         {

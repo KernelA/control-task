@@ -1,43 +1,24 @@
 ﻿namespace MOTestTasks
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
-    using System.Text;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Linq;
-    using System.Collections.Generic;
     using System.Xml;
-
-    using EOpt.Help;
-    using EOpt.Math.Optimization;
-    using EOpt.Math.Optimization.MOOpt;
-
-    using Problems;
-
-    using MathNet.Numerics.Distributions;
 
     using CommandLine;
     using CommandLine.Text;
 
+    using EOpt.Math.Optimization;
+    using EOpt.Math.Optimization.MOOpt;
+
+    using MathNet.Numerics.Distributions;
+
     using NLog;
 
-
-    internal class NormalGen : EOpt.Math.Random.INormalGen
-    {
-        private Normal _normal;
-
-        public NormalGen()
-        {
-            _normal = new Normal();
-
-        }
-
-        public double NRandVal(double Mean, double StdDev)
-        {
-            return Mean + _normal.Sample() * StdDev;
-        }
-    }
+    using Problems;
 
     internal class ContGen : EOpt.Math.Random.IContUniformGen
     {
@@ -54,7 +35,20 @@
         }
     }
 
-    enum TestProblems { ZDT1, ZDT2, ZDT3, ZDT6, F1CPF, F5CPF, DTLZ1, DTLZ2 };
+    internal class NormalGen : EOpt.Math.Random.INormalGen
+    {
+        private Normal _normal;
+
+        public NormalGen()
+        {
+            _normal = new Normal();
+        }
+
+        public double NRandVal(double Mean, double StdDev)
+        {
+            return Mean + _normal.Sample() * StdDev;
+        }
+    }
 
     internal class Options
     {
@@ -63,46 +57,24 @@
             new Example("Пример запуска", new Options { TestProblems = Enum.GetValues(typeof(MOTestTasks.TestProblems)).Cast<TestProblems>(), OutputDir = ".../dir", MaxRun = 10, DimDec = 30})
         };
 
-        [Value(0, MetaName = "Test problems.", HelpText = "Названия тестовых проблем для запуска. Значения перечисляются через пробел.", Min = 1, Max = 8)]
-        public IEnumerable<TestProblems> TestProblems { get; set; }
-
-        [Option('o', "output-dir", HelpText = "Путь до директории, где будут сохранены результаты в виде XML файлов.", Required = true)]
-        public string OutputDir { get; set; }
-
-        [Option('r', "max-run", HelpText = "Максимальное число запусков.", Required = true)]
-        public int MaxRun { get; set; }
+        [Usage]
+        public static IEnumerable<Example> Examples => _examples;
 
         [Option('d', "dim-dec", HelpText = "Размерность пространства решений. Для ZDT6 всегда используется значение 10, если значение параметра больше 10. Для DTLZ1 и DTLZ2 этот параметр не имеет значения так как размерность пространства решения рассчитывается на основе числа критериев.", Default = 30)]
         public int DimDec { get; set; }
 
+        [Option('r', "max-run", HelpText = "Максимальное число запусков.", Required = true)]
+        public int MaxRun { get; set; }
 
-        [Usage]
-        public static IEnumerable<Example> Examples => _examples;
+        [Option('o', "output-dir", HelpText = "Путь до директории, где будут сохранены результаты в виде XML файлов.", Required = true)]
+        public string OutputDir { get; set; }
+
+        [Value(0, MetaName = "Test problems.", HelpText = "Названия тестовых проблем для запуска. Значения перечисляются через пробел.", Min = 1, Max = 8)]
+        public IEnumerable<TestProblems> TestProblems { get; set; }
     }
-
 
     internal class Program
     {
-        private static void SolveProblems(Options options)
-        {
-            int dimDec = options.DimDec;
-
-            Dictionary<TestProblems, INamedMOProblem> problems = new Dictionary<TestProblems, INamedMOProblem>()
-            {
-                [TestProblems.ZDT1] = new ZDT1(dimDec),
-                [TestProblems.ZDT2] = new ZDT2(dimDec),
-                [TestProblems.ZDT3] = new ZDT3(dimDec),
-                [TestProblems.ZDT6] = new ZDT6(Math.Min(10, dimDec)),
-                [TestProblems.F1CPF] = new F1CPF(dimDec),
-                [TestProblems.F5CPF] = new F5CPF(dimDec),
-                [TestProblems.DTLZ1] = new DTLZ1(3),
-                [TestProblems.DTLZ2] = new DTLZ2(3)
-            };
-
-            Parallel.ForEach(options.TestProblems, problem => SolveFW(problems[problem], options.OutputDir, options.MaxRun));
-
-        }
-
         private static TParams CreateParams<TParams>(object[] parameters)
         {
             Type type = typeof(TParams);
@@ -153,6 +125,47 @@
             return (TParams)obj;
         }
 
+        private static void Main(string[] args)
+        {
+            Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
+
+            ParserResult<Options> result = Parser.Default.ParseArguments<Options>(args);
+
+            result.MapResult(options => Run(options), _ => 1);
+        }
+
+        private static int Run(Options options)
+        {
+            Logger logger = LogManager.GetLogger("Console");
+
+            if (!Directory.Exists(options.OutputDir))
+            {
+                logger.Error($"'{options.OutputDir}' does not exist.");
+                return -1;
+            }
+
+            if (options.MaxRun < 1)
+            {
+                logger.Error($"MaxRun (valus is {options.MaxRun}) is less than 1.");
+                return -1;
+            }
+
+            if (options.DimDec < 2)
+            {
+                logger.Error($"DimDec (valus is {options.DimDec}) is less than 2.");
+                return -1;
+            }
+
+            if (options.TestProblems.Distinct().Count() != options.TestProblems.Count())
+            {
+                logger.Error($"TestProblems have a duplicate values.");
+                return -1;
+            }
+
+            SolveProblems(options);
+
+            return 0;
+        }
 
         private static void SolveFW(INamedMOProblem Problem, string PathToOutDir, int MaxRun)
         {
@@ -300,47 +313,26 @@
             MappedDiagnosticsContext.Remove("thread_id");
         }
 
-
-        private static int Run(Options options)
+        private static void SolveProblems(Options options)
         {
-            Logger logger = LogManager.GetLogger("Console");
+            int dimDec = options.DimDec;
 
-            if (!Directory.Exists(options.OutputDir))
+            Dictionary<TestProblems, INamedMOProblem> problems = new Dictionary<TestProblems, INamedMOProblem>()
             {
-                logger.Error($"'{options.OutputDir}' does not exist.");
-                return -1;
-            }
+                [TestProblems.ZDT1] = new ZDT1(dimDec),
+                [TestProblems.ZDT2] = new ZDT2(dimDec),
+                [TestProblems.ZDT3] = new ZDT3(dimDec),
+                [TestProblems.ZDT6] = new ZDT6(Math.Min(10, dimDec)),
+                [TestProblems.F1CPF] = new F1CPF(dimDec),
+                [TestProblems.F5CPF] = new F5CPF(dimDec),
+                [TestProblems.DTLZ1] = new DTLZ1(3),
+                [TestProblems.DTLZ2] = new DTLZ2(3)
+            };
 
-            if (options.MaxRun < 1)
-            {
-                logger.Error($"MaxRun (valus is {options.MaxRun}) is less than 1.");
-                return -1;
-            }
-
-            if (options.DimDec < 2)
-            {
-                logger.Error($"DimDec (valus is {options.DimDec}) is less than 2.");
-                return -1;
-            }
-
-            if (options.TestProblems.Distinct().Count() != options.TestProblems.Count())
-            {
-                logger.Error($"TestProblems have a duplicate values.");
-                return -1;
-            }
-
-            SolveProblems(options);
-
-            return 0;
-        }
-
-        private static void Main(string[] args)
-        {
-            Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
-
-            ParserResult<Options> result = Parser.Default.ParseArguments<Options>(args);
-
-            result.MapResult(options => Run(options), _ => 1);
+            Parallel.ForEach(options.TestProblems, problem => SolveFW(problems[problem], options.OutputDir, options.MaxRun));
         }
     }
+
+    internal enum TestProblems
+    { ZDT1, ZDT2, ZDT3, ZDT6, F1CPF, F5CPF, DTLZ1, DTLZ2 };
 }

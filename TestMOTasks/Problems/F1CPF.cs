@@ -3,19 +3,10 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
-    using EOpt.Math.Optimization.MOOpt;
-
-    class F1CPF : BaseFCPF
+    internal class F1CPF : BaseFCPF
     {
         private double[] _resSum;
-
-        public F1CPF(int Dim) : base(2, "F1CPF", Enumerable.Repeat(0.0, Dim).ToArray(), Enumerable.Repeat(1.0, Dim).ToArray())
-        {
-            _resSum = new double[2];
-        }
 
         protected override IReadOnlyList<double> TempSum(IReadOnlyList<double> Point)
         {
@@ -44,5 +35,9 @@
             return _resSum;
         }
 
+        public F1CPF(int Dim) : base(2, "F1CPF", Enumerable.Repeat(0.0, Dim).ToArray(), Enumerable.Repeat(1.0, Dim).ToArray())
+        {
+            _resSum = new double[2];
+        }
     }
 }

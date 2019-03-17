@@ -3,22 +3,12 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
-    class DTLZ1 : BaseProblem
+    internal class DTLZ1 : BaseProblem
     {
-        private const double PI_20 = Math.PI * 20;
-
         private const int k = 5;
-
+        private const double PI_20 = Math.PI * 20;
         private double[] _xm, _res;
-
-        public DTLZ1(int CountObjs) : base(CountObjs, $"DTLZ1({CountObjs})", Enumerable.Repeat(0.0, CountObjs + k - 1).ToArray(), Enumerable.Repeat(1.0, CountObjs + k - 1).ToArray())
-        {
-            _xm = new double[k];
-            _res = new double[CountObjs];
-        }
 
         private double G()
         {
@@ -26,11 +16,17 @@
 
             for (int i = 0; i < _xm.Length; i++)
             {
-                temp  = _xm[i] - 0.5;
+                temp = _xm[i] - 0.5;
                 sum += temp * temp - Math.Cos(PI_20 * temp);
             }
 
             return 100 * (k + sum);
+        }
+
+        public DTLZ1(int CountObjs) : base(CountObjs, $"DTLZ1({CountObjs})", Enumerable.Repeat(0.0, CountObjs + k - 1).ToArray(), Enumerable.Repeat(1.0, CountObjs + k - 1).ToArray())
+        {
+            _xm = new double[k];
+            _res = new double[CountObjs];
         }
 
         public override double ObjFunction(IReadOnlyList<double> Point, int NumObj) => throw new NotImplementedException();
@@ -55,7 +51,7 @@
                     product *= Point[j];
                 }
 
-                if(numObj != 0)
+                if (numObj != 0)
                 {
                     product *= (1 - Point[i]);
                 }
