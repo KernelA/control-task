@@ -8,6 +8,8 @@
     using System.Threading.Tasks;
     using System.Xml;
 
+    using CommandLine;
+
     using EOpt.Math.Optimization;
     using EOpt.Math.Optimization.MOOpt;
     using EOpt.Math.Optimization.OOOpt;
@@ -65,21 +67,38 @@
         }
     }
 
+    internal class Options
+    {
+        [Option('r', "max-run", HelpText = "Максимальное число запусков.", Required = true)]
+        public int MaxRun { get; set; }
+
+        [Option('o', "output-dir", HelpText = "Путь до директории, где будут сохранены результаты в виде XML файлов.", Required = true)]
+        public string OutputDir { get; set; }
+
+        [Option('s', "switches", HelpText = "Число переключений для управления", Required = true)]
+        public IEnumerable<int> Switches { get; set; }
+
+        [Option("task-type", HelpText = "Задачи, которые необходимо решить: I12 или MOI (многокритериальная).", Required = true)]
+        public ProblemParamType Tasks { get; set; }
+
+        [Option('t', "max-time", HelpText = "Конечное время для отрезка [0; T] на котором ищется решение.", Required = true)]
+        public IEnumerable<double> Times { get; set; }
+
+        [Option('b', "bounds", HelpText = "Ограничения на управления.", Min = 2, Max = 2, Required = true)]
+        public IEnumerable<double> UBounds { get; set; }
+
+        [Option('i', "init-value", HelpText = "Начальные условия для задачи Коши.", Min = 2, Max = 2, Required = true)]
+        public IEnumerable<double> X0 { get; set; }
+
+        [Option('l', "lambda", HelpText = "Ограничения для lambda. Пары чисел - ограничение снизу, ограничение сверху. Если 4 числа, то отдельно ограничения для первой и второй задачи.", Min = 2, Max = 4, Required =true)]
+        public IEnumerable<double> Lambda { get; set; }
+    }
+
     internal class Program
     {
-        private const int MAX_RUN = 10;
-
-        private const int U_LOWER = -5, U_UPPER = 5;
-
-        private const double X10 = 0.5, X20 = 1;
-
         private static readonly Logger _logger = LogManager.GetLogger("Main");
-        private static readonly int[] SWITCHES = { 8, 10, 15 };
 
-        private static readonly double[] TIMES = { 1.5 };
-        private static string _pathToDir = String.Empty;
-
-        private static void BBBCOptimize(ControlBaseTask problem, Logger logger, XmlDocument doc)
+        private static void BBBCOptimize(ControlBaseTask problem, int MaxRun, Logger logger, XmlDocument doc)
         {
             const int numParams = 4;
 
@@ -96,7 +115,7 @@
 
             XmlElement bbbcElem = doc.CreateElement("BBBC");
             doc.DocumentElement.AppendChild(bbbcElem);
-            Optimize<BBBCOptimizer, BBBCParams>(problem, opt, paramteters, doc, bbbcElem, logger);
+            Optimize<BBBCOptimizer, BBBCParams>(problem, opt, paramteters, doc, bbbcElem, logger, MaxRun);
         }
 
         private static TParams CreateParams<TParams>(object[] parameters)
@@ -149,7 +168,7 @@
             return (TParams)obj;
         }
 
-        private static void FWOptimize(ControlBaseTask problem, Logger logger, XmlDocument doc)
+        private static void FWOptimize(ControlBaseTask problem, int MaxRun, Logger logger, XmlDocument doc)
         {
             const int numParams = 6;
 
@@ -167,10 +186,10 @@
             XmlElement fwElem = doc.CreateElement("FW");
             doc.DocumentElement.AppendChild(fwElem);
 
-            Optimize<FWOptimizer, FWParams>(problem, opt, paramteters, doc, fwElem, logger);
+            Optimize<FWOptimizer, FWParams>(problem, opt, paramteters, doc, fwElem, logger, MaxRun);
         }
 
-        private static void GEMOptimize(ControlBaseTask problem, Logger logger, XmlDocument doc)
+        private static void GEMOptimize(ControlBaseTask problem, int MaxRun, Logger logger, XmlDocument doc)
         {
             const int numParams = 5;
 
@@ -187,40 +206,19 @@
 
             XmlElement gemElem = doc.CreateElement("GEM");
             doc.DocumentElement.AppendChild(gemElem);
-            Optimize<GEMOptimizer, GEMParams>(problem, opt, paramteters, doc, gemElem, logger);
+            Optimize<GEMOptimizer, GEMParams>(problem, opt, paramteters, doc, gemElem, logger, MaxRun);
         }
 
         private static void Main(string[] args)
         {
             Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
 
-            if (args.Length != 1)
-            {
-                Console.WriteLine("You need to specify path to the directory where store results as cli argument.");
-            }
-            else
-            {
-                _pathToDir = args[0];
+            ParserResult<Options> result = Parser.Default.ParseArguments<Options>(args);
 
-                if (!Directory.Exists(_pathToDir))
-                {
-                    Console.WriteLine($"'{_pathToDir}' does not exist.");
-                    return;
-                }
-            }
-
-            //Task task1 = new Task(taskType => SolveTask((ProblemType)taskType), ProblemType.I1);
-            //Task task2 = new Task(taskType => SolveTask((ProblemType)taskType), ProblemType.I2);
-
-            //task1.Start();
-            //task2.Start();
-
-            //Task.WaitAll(task1, task2);
-
-            SolveMOTask();
+            result.MapResult(options => Run(options), _ => 1);
         }
 
-        private static void MOFWOptimize(MOControlTask problem, Logger logger, XmlWriter XmlWriter)
+        private static void MOFWOptimize(MOControlTask problem, int MaxRun, Logger logger, XmlWriter XmlWriter)
         {
             const int numParams = 6;
 
@@ -271,9 +269,9 @@
 
                 XmlWriter.WriteStartElement("Runs");
 
-                for (int i = 0; i < MAX_RUN; i++)
+                for (int i = 0; i < MaxRun; i++)
                 {
-                    logger.Info($"Run {i} of {MAX_RUN}");
+                    logger.Info($"Run {i} of {MaxRun}");
 
                     XmlWriter.WriteStartElement("Run");
 
@@ -341,7 +339,7 @@
             XmlWriter.WriteEndElement();
         }
 
-        private static void Optimize<TOpt, TParams>(ControlBaseTask problem, TOpt opt, object[][] parameters, XmlDocument doc, XmlElement optElem, Logger logger)
+        private static void Optimize<TOpt, TParams>(ControlBaseTask problem, TOpt opt, object[][] parameters, XmlDocument doc, XmlElement optElem, Logger logger, int MaxRun)
                             where TOpt : IOOOptimizer<TParams>, new()
         {
             Dictionary<string, string> resInfo = new Dictionary<string, string>()
@@ -380,9 +378,9 @@
 
                 experimentsElem.AppendChild(runsElem);
 
-                for (int i = 0; i < MAX_RUN; i++)
+                for (int i = 0; i < MaxRun; i++)
                 {
-                    logger.Info($"Run {i} of {MAX_RUN}");
+                    logger.Info($"Run {i} of {MaxRun}");
 
                     var runElem = doc.CreateElement("Run");
 
@@ -419,12 +417,6 @@
                             controlElem.SetAttribute("Value", opt.Solution.Point[j].ToString());
                             controlsElem.AppendChild(controlElem);
                         }
-
-                        //logger.Info($"X1T = {resInfo["X1T"]}");
-                        //logger.Info($"X2T = {resInfo["X2T"]}");
-                        //logger.Info($"lambda1 = {resInfo["lambda1"]}");
-                        //logger.Info($"lambda2 = {resInfo["lambda2"]}");
-                        //logger.Info($"I1 = {resInfo["TargetV"]}");
                     }
                     catch (Exception exc)
                     {
@@ -434,43 +426,56 @@
                         logger.Info($"Skip run {i}.");
                         continue;
                     }
-
-                    //if (bestSol == null)
-                    //{
-                    //    bestSol = opt.Solution.DeepCopy();
-                    //}
-                    //else
-                    //{
-                    //    if (opt.Solution.Objs[0] < bestSol.Objs[0])
-                    //    {
-                    //        bestSol = opt.Solution.DeepCopy();
-                    //    }
-                    //}
-
-                    //logger.Info($"I = {bestSol.Objs[bestSol.Objs.Count - 1]}");
-                    //problem.TargetFunction(bestSol.Point);
-                    //logger.Info("Solution:");
-                    //logger.Info(opt.Solution.Point.Select(a => Math.Round(a, 2)).Select(a => a.ToString()).Aggregate((a, b) => $"{a} {b}"));
-                    //logger.Info($"(x1(T), x2(T)) = {temp.X1T}; {temp.X2T}");
                 }
             }
         }
 
-        private static void SolveMOTask()
+        private static int Run(Options options)
         {
-            ParallelOptions options = new ParallelOptions()
-            {
-                MaxDegreeOfParallelism = 3
-            };
+            Logger logger = LogManager.GetLogger("Console");
 
-            Parallel.ForEach(SWITCHES, options, SolveMOTaskWithT);
+            if (!Directory.Exists(options.OutputDir))
+            {
+                logger.Error($"'{options.OutputDir}' does not exist.");
+                return -1;
+            }
+
+            if (options.MaxRun < 1)
+            {
+                logger.Error($"MaxRun (valus is {options.MaxRun}) is less than 1.");
+                return -1;
+            }
+
+            var bound = options.UBounds.ToArray();
+
+            if (bound[0] >= bound[1])
+            {
+                logger.Error("The lower bound is greater or equal than the upper bound.");
+                return -1;
+            }
+
+            if (options.Times.Where(t => t <= 0).Any())
+            {
+                logger.Error("An one value of time is less or equal than 0.");
+                return -1;
+            }
+
+            if (options.Switches.Where(n => n < 1).Any())
+            {
+                logger.Error("An one value of switches is less than 0.");
+                return -1;
+            }
+
+            SolveTask(options.Tasks, options);
+
+            return 0;
         }
 
-        private static void SolveMOTaskWithT(int NSwitches)
+        private static void SolveMOTaskWithT(int NSwitches, IReadOnlyCollection<double> Times, IReadOnlyList<double> Bounds, IReadOnlyList<double> X0, string PathToDir, int MaxRun)
         {
             int n = NSwitches;
 
-            string dirPath = Path.Combine(_pathToDir, "MOTask");
+            string dirPath = Path.Combine(PathToDir, "MOTask");
 
             if (!Directory.Exists(dirPath))
             {
@@ -480,18 +485,20 @@
             MappedDiagnosticsContext.Set("id", $"_{Thread.CurrentThread.ManagedThreadId}_");
             MappedDiagnosticsContext.Set("problem", "_mo-problem_");
 
-            foreach (var (i, Tmax) in Enumerable.Range(0, TIMES.Length).Zip(TIMES, (i, tmax) => (i, tmax)))
+            foreach (var (i, Tmax) in Enumerable.Range(0, Times.Count).Zip(Times, (i, tmax) => (i, tmax)))
             {
-                string pathToFile = Path.Combine(_pathToDir, dirPath, $"res_{n}_{i}.xml");
+                string pathToFile = Path.Combine(dirPath, $"res_{n}_{i}.xml");
 
                 _logger.Info($"Open a xml file. '{pathToFile}'");
 
-                (double lambda1, double lambda2) = LambdasTask.GetLambdas(ProblemType.I1, n);
-                (double lambda3, double lambda4) = LambdasTask.GetLambdas(ProblemType.I2, n);
+                var (lambda1, lambda2) = LambdasTask.GetLambdas(ProblemType.I1, n);
+                var (lambda3, lambda4) = LambdasTask.GetLambdas(ProblemType.I2, n);
+
+                double lowU = Bounds[0], uppU = Bounds[1], x10 = X0[0], x20 = X0[1];
 
                 using (XmlWriter writer = XmlWriter.Create(pathToFile))
                 {
-                    MOControlTask problem = new MOControlTask(n, U_LOWER, U_UPPER, Tmax, X10, X20, lambda1, lambda2, lambda3, lambda4);
+                    MOControlTask problem = new MOControlTask(n, lowU, uppU, Tmax, x10, x20, lambda1, lambda2, lambda3, lambda4);
 
                     _logger.Info($"Start solving N = {n}");
 
@@ -504,10 +511,10 @@
                             ["Name"] = "MOProblem",
                             ["Tmax"] = Tmax.ToString(),
                             ["NSwitches"] = n.ToString(),
-                            ["ULower"] = U_LOWER.ToString(),
-                            ["UUpper"] = U_UPPER.ToString(),
-                            ["X10"] = X10.ToString(),
-                            ["X20"] = X20.ToString(),
+                            ["ULower"] = lowU.ToString(),
+                            ["UUpper"] = uppU.ToString(),
+                            ["X10"] = x10.ToString(),
+                            ["X20"] = x20.ToString(),
                             ["lambda1"] = lambda1.ToString(),
                             ["lambda2"] = lambda2.ToString(),
                             ["lambda3"] = lambda3.ToString(),
@@ -524,7 +531,7 @@
                     _logger.Info($"Creating problem. Type is MOProblem");
                     _logger.Info($"Start solving with MOFW.");
 
-                    MOFWOptimize(problem, _logger, writer);
+                    MOFWOptimize(problem, MaxRun, _logger, writer);
 
                     writer.WriteEndElement();
                     writer.WriteEndDocument();
@@ -537,12 +544,45 @@
             MappedDiagnosticsContext.Remove("problem");
         }
 
-        private static void SolveTask(ProblemType Problem)
+        private static void SolveTask(ProblemParamType task, Options options)
+        {
+            if (task == ProblemParamType.MOI)
+            {
+                Parallel.ForEach(options.Switches, (n) => SolveMOTaskWithT(n, options.Times.ToArray(), options.UBounds.ToArray(), options.X0.ToArray(), options.OutputDir, options.MaxRun));
+            }
+            else if (task == ProblemParamType.I12)
+            {
+                double lambdaL1, lambdaU1, lambdaL2, lambdaU2;
+
+                var temp = options.Lambda.ToArray();
+
+                if (temp.Length == 2)
+                {
+                    lambdaL1 = lambdaL2 = temp[0];
+                    lambdaU1 = lambdaU2 = temp[1];
+                }
+                else
+                {
+                    int i = 0;
+                    lambdaL1 = temp[i++];
+                    lambdaU1 = temp[i++];
+                    lambdaL2 = temp[i++];
+                    lambdaU2 = temp[i++];
+                }
+
+                var task1 = Task.Factory.StartNew(() => SolveTask(ProblemType.I1, options.Switches.ToArray(), options.Times.ToArray(), options.UBounds.ToArray(), options.X0.ToArray(), options.OutputDir, options.MaxRun, lambdaL1, lambdaU1));
+                var task2 = Task.Factory.StartNew(() => SolveTask(ProblemType.I2, options.Switches.ToArray(), options.Times.ToArray(), options.UBounds.ToArray(), options.X0.ToArray(), options.OutputDir, options.MaxRun, lambdaL2, lambdaU2));
+
+                Task.WaitAll(task1, task2);
+            }
+        }
+
+        private static void SolveTask(ProblemType Problem, IReadOnlyCollection<int> NSwitches, IReadOnlyCollection<double> Times, IReadOnlyList<double> Bounds, IReadOnlyList<double> X0, string PathToDir, int MaxRun, double LowerLambda, double UpperLambda)
         {
             MappedDiagnosticsContext.Set("id", $"_{Thread.CurrentThread.ManagedThreadId}_");
             MappedDiagnosticsContext.Set("problem", Problem == ProblemType.I1 ? "_i1_" : "_i2_");
 
-            string dirPath = Path.Combine(_pathToDir, Problem == ProblemType.I1 ? "Task1" : "Task2");
+            string dirPath = Path.Combine(PathToDir, Problem == ProblemType.I1 ? "Task1" : "Task2");
 
             if (!Directory.Exists(dirPath))
             {
@@ -551,14 +591,18 @@
 
             XmlWriterSettings xmlSettings = new XmlWriterSettings();
 
-            foreach (var n in SWITCHES)
+            double uLower = Bounds[0], uUpper = Bounds[1];
+
+            double X10 = X0[0], X20 = X0[1];
+
+            int i = 0;
+
+            foreach (var n in NSwitches)
             {
                 _logger.Info($"Start solving N = {n}");
 
-                for (int i = 0; i < TIMES.Length; i++)
+                foreach (var TMax in Times)
                 {
-                    double TMax = TIMES[i];
-
                     XmlDocument doc = new XmlDocument();
                     XmlDeclaration xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
                     XmlElement root = doc.CreateElement("Problem");
@@ -566,15 +610,15 @@
                     doc.InsertBefore(xmlDeclaration, root);
 
                     {
-                        Dictionary<string, string> problemDesc = new Dictionary<string, string>
+                        var problemDesc = new Dictionary<string, string>
                         {
                             ["Name"] = Problem.ToString(),
                             ["Tmax"] = TMax.ToString(),
                             ["NSwitches"] = n.ToString(),
-                            ["ULower"] = U_LOWER.ToString(),
-                            ["UUpper"] = U_UPPER.ToString(),
-                            ["X10"] = X10.ToString(),
-                            ["X20"] = X20.ToString()
+                            ["ULower"] = uLower.ToString(),
+                            ["UUpper"] = uUpper.ToString(),
+                            ["X10"] = X0[0].ToString(),
+                            ["X20"] = X0[1].ToString()
                         };
 
                         foreach (var name in problemDesc)
@@ -592,28 +636,28 @@
                     {
                         case ProblemType.I1:
                             {
-                                problem = new ControlTaskI1(n, U_LOWER, U_UPPER, TMax, X10, X20);
+                                problem = new ControlTaskI1(n, uLower, uUpper, TMax, X10, X20, LowerLambda, UpperLambda);
                                 break;
                             }
                         case ProblemType.I2:
                             {
-                                problem = new ControlTaskI2(n, U_LOWER, U_UPPER, TMax, X10, X20);
+                                problem = new ControlTaskI2(n, uLower, uUpper, TMax, X10, X20, LowerLambda, UpperLambda);
                                 break;
                             }
                         default:
                             {
-                                throw new ArgumentException("Invalid problem type.", nameof(ProblemType));
+                                throw new ArgumentException("Invalid problem type.", nameof(ProblemParamType));
                             }
                     }
 
                     _logger.Info($"Start solving with BBBC.");
-                    BBBCOptimize(problem, _logger, doc);
+                    BBBCOptimize(problem, MaxRun, _logger, doc);
                     _logger.Info($"Start solving with FW.");
-                    FWOptimize(problem, _logger, doc);
+                    FWOptimize(problem, MaxRun, _logger, doc);
                     _logger.Info($"Start solving with GEM.");
-                    GEMOptimize(problem, _logger, doc);
+                    GEMOptimize(problem, MaxRun, _logger, doc);
 
-                    string pathToFile = Path.Combine(_pathToDir, dirPath, $"res_{n}_{i}.xml");
+                    string pathToFile = Path.Combine(dirPath, $"res_{n}_{i++}.xml");
 
                     using (XmlWriter writer = XmlWriter.Create(pathToFile, xmlSettings))
                     {
@@ -624,6 +668,8 @@
             }
         }
     }
+
+    internal enum ProblemParamType { I12, MOI };
 
     internal enum ProblemType { I1, I2 };
 }

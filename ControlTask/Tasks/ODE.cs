@@ -2,43 +2,21 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Text;
 
     using MathNet.Numerics.LinearAlgebra;
     using MathNet.Numerics.OdeSolvers;
 
-    class TargetODE
+    internal class TargetODE
     {
         private const int _sizeOfRes = 81;
 
         private static readonly double _a = 0.00007292123518 * Math.Sqrt(3);
 
-        private Vector<double> _x0;
-
-        private double _Tmax;
-
-        private double[] _timesValue;
-
-        private IReadOnlyList<double> _params;
-
         private int _nSwitch = 0;
-
-        public TargetODE(double x01, double x02, double Tmax)
-        {
-            _x0 = CreateVector.Dense<double>(2);
-            _x0[0] = x01;
-            _x0[1] = x02;
-            _Tmax = Tmax;
-        }
-
-        public Vector<double>[] Integrate(double[] TimesValue, IReadOnlyList<double> Control)
-        {
-            _nSwitch = TimesValue.Length - 1;
-            _timesValue = TimesValue;
-            _params = Control;
-
-            return RungeKutta.FourthOrder(_x0, 0, _Tmax, _sizeOfRes, OdeFunction);
-        }
+        private IReadOnlyList<double> _params;
+        private double[] _timeValues;
+        private double _tMax;
+        private Vector<double> _x0;
 
         private Vector<double> OdeFunction(double t, Vector<double> x)
         {
@@ -46,7 +24,7 @@
 
             for (int i = 0; i < _nSwitch - 1; i++)
             {
-                if (t >= _timesValue[i] && t < _timesValue[i + 1])
+                if (t >= _timeValues[i] && t < _timeValues[i + 1])
                 {
                     u1IndexValue = i;
                     break;
@@ -59,6 +37,22 @@
             _y[1] = -_a * x[0] + _params[u1IndexValue + _nSwitch];
 
             return _y;
+        }
+
+        public TargetODE(double x01, double x02, double Tmax, double[] TimeValues)
+        {
+            _x0 = CreateVector.Dense<double>(2);
+            _x0[0] = x01;
+            _x0[1] = x02;
+            _tMax = Tmax;
+            _nSwitch = TimeValues.Length - 1;
+            _timeValues = TimeValues;
+        }
+
+        public Vector<double>[] Integrate(IReadOnlyList<double> Control)
+        {
+            _params = Control;
+            return RungeKutta.FourthOrder(_x0, 0, _tMax, _sizeOfRes, OdeFunction);
         }
     }
 }
