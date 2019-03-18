@@ -8,7 +8,7 @@
 
     internal class TargetODE
     {
-        private const int _sizeOfRes = 81;
+        private const int _sizeOfRes = 101;
 
         private static readonly double _a = 0.00007292123518 * Math.Sqrt(3);
 
