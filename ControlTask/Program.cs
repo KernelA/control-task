@@ -29,13 +29,13 @@
                 _lambdas[i] = new Dictionary<int, (double, double)>(3);
             }
 
-            _lambdas[0].Add(8, (11247.6302753864, 11143.217997764));
-            _lambdas[0].Add(10, (22621.5610681351, 18165.9891931346));
-            _lambdas[0].Add(15, (18420.4788767144, 10203.7952768332));
+            _lambdas[0].Add(8, (19026.9580310171, 25097.6877798633));
+            _lambdas[0].Add(10, (5034.05218070678, 5022.28936705315));
+            _lambdas[0].Add(15, (5582.69129903226, 11726.4808401677));
 
-            _lambdas[1].Add(8, (2555.43922113448, 4311.17267957873));
-            _lambdas[1].Add(10, (4207.31058609648, 1248.40435098767));
-            _lambdas[1].Add(15, (4096.36454659811, 2773.91241130186));
+            _lambdas[1].Add(8, (13335.3250648994, 20282.3764909301));
+            _lambdas[1].Add(10, (12000.4731629389, 11816.3658597267));
+            _lambdas[1].Add(15, (30729.8724023151, 21520.329216039));
         }
 
         public static (double Lambda1, double Lambda2) GetLambdas(ProblemType Problem, int NSwitches)
@@ -224,12 +224,12 @@
 
             object[][] parameters =
             {
-                new object[numParams] {150, 2000, 5, 5, 20, 0.25},
-                new object[numParams] {250, 500, 15.0, 5, 20, 0.9},
-                new object[numParams] {250, 500, 10.0, 10, 30, 0.8},
-                new object[numParams] {400, 300, 10.0, 5, 20, 1.2},
-                new object[numParams] {350, 1000, 5.0, 10, 20, 0.5},
-                new object[numParams] {200, 1000, 5.0, 10, 20, 0.6}
+                new object[numParams] {300, 900, 5, 5, 20, 0.25},
+                new object[numParams] {500, 500, 15.0, 5, 20, 0.9},
+                new object[numParams] {600, 600, 10.0, 10, 30, 0.8},
+                new object[numParams] {400, 400, 10.0, 5, 20, 1.2},
+                new object[numParams] {500, 650, 5.0, 10, 20, 0.5},
+                new object[numParams] {500, 500, 5.0, 10, 20, 0.6}
             };
 
             MOFWOptimizer opt = new MOFWOptimizer();
@@ -506,7 +506,7 @@
                     writer.WriteStartElement("Problem");
 
                     {
-                        Dictionary<string, string> problemDesc = new Dictionary<string, string>
+                        var problemDesc = new Dictionary<string, string>
                         {
                             ["Name"] = "MOProblem",
                             ["Tmax"] = Tmax.ToString(),
