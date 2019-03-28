@@ -227,7 +227,7 @@
                 new object[numParams] {300, 900, 5, 5, 20, 0.25},
                 new object[numParams] {500, 500, 15.0, 5, 20, 0.9},
                 new object[numParams] {600, 600, 10.0, 10, 30, 0.8},
-                new object[numParams] {400, 400, 10.0, 5, 20, 1.2},
+                new object[numParams] {200, 1000, 10.0, 5, 20, 0.2},
                 new object[numParams] {500, 650, 5.0, 10, 20, 0.5},
                 new object[numParams] {500, 500, 5.0, 10, 20, 0.6}
             };
