@@ -177,11 +177,11 @@
 
             object[][] parameters =
             {
-                new object[numParams] {250, 1000, 10, 20, 30, 1.1},
-                new object[numParams] {300, 1000, 20, 8, 15, 0.9},
-                new object[numParams] {200, 1250, 25, 8, 17, 0.85},
-                new object[numParams] {400, 500, 15, 8, 12, 0.7},
-                new object[numParams] {325, 800, 20, 10, 19, 0.5}
+                //new object[numParams] {250, 600, 10, 20, 30, 1.1},
+                //new object[numParams] {300, 1000, 20, 8, 15, 0.9},
+                new object[numParams] {300, 600, 25, 8, 17, 0.3},
+                new object[numParams] {400, 900, 15, 8, 12, 0.1},
+                new object[numParams] {350, 750, 20, 10, 19, 0.25}
             };
 
             string pathToXml = Path.Combine(PathToOutDir, $"{Problem.Name}_res.xml");
