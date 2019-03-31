@@ -178,10 +178,10 @@
             object[][] parameters =
             {
                 //new object[numParams] {250, 600, 10, 20, 30, 1.1},
-                //new object[numParams] {300, 1000, 20, 8, 15, 0.9},
-                new object[numParams] {300, 600, 25, 8, 17, 0.3},
+                new object[numParams] {300, 700, 20, 8, 15, 0.025},
+                new object[numParams] {300, 1000, 25, 8, 17, 0.05},
                 new object[numParams] {400, 900, 15, 8, 12, 0.1},
-                new object[numParams] {350, 750, 20, 10, 19, 0.25}
+                new object[numParams] {350, 750, 20, 10, 19, 0.15}
             };
 
             string pathToXml = Path.Combine(PathToOutDir, $"{Problem.Name}_res.xml");
@@ -324,6 +324,7 @@
                 [TestProblems.ZDT3] = new ZDT3(dimDec),
                 [TestProblems.ZDT6] = new ZDT6(Math.Min(10, dimDec)),
                 [TestProblems.F1CPF] = new F1CPF(dimDec),
+                [TestProblems.F2CPF] = new F2CPF(dimDec),
                 [TestProblems.F5CPF] = new F5CPF(dimDec),
                 [TestProblems.DTLZ1] = new DTLZ1(3),
                 [TestProblems.DTLZ2] = new DTLZ2(3)
@@ -334,5 +335,5 @@
     }
 
     internal enum TestProblems
-    { ZDT1, ZDT2, ZDT3, ZDT6, F1CPF, F5CPF, DTLZ1, DTLZ2 };
+    { ZDT1, ZDT2, ZDT3, ZDT6, F1CPF, F2CPF, F5CPF, DTLZ1, DTLZ2 };
 }
