@@ -27,9 +27,6 @@
         public BaseFCPF(int CountObjs, string Name, IReadOnlyCollection<double> LowerBounds, IReadOnlyCollection<double> UpperBounds) : base(CountObjs, Name, LowerBounds, UpperBounds)
         {
             _res = new double[CountObjs];
-
-            _lowerBounds = LowerBounds.ToArray();
-            _upperBounds = UpperBounds.ToArray();
             EvenJ2 = CountEvenJ2();
             OddJ1 = CountOddJ1();
         }
