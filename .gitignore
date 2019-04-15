@@ -344,3 +344,5 @@ healthchecksdb
 [Rr]es/
 
 !LocalNuget/*.nupkg
+
+SolveODE/
