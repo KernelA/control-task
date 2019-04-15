@@ -6,7 +6,7 @@
     using MathNet.Numerics.LinearAlgebra;
     using MathNet.Numerics.OdeSolvers;
 
-    internal class TargetODE
+    public class TargetODE
     {
         private const int _sizeOfRes = 251;
 
