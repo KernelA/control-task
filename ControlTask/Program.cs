@@ -224,8 +224,8 @@
 
             object[][] parameters =
             {
-                new object[numParams] {300, 900, 5, 5, 20, 0.1},
-                new object[numParams] {500, 600, 9.0, 5, 20, 0.3},
+                new object[numParams] {350, 1000, 5, 5, 20, 0.2},
+                new object[numParams] {500, 600, 8.0, 5, 20, 0.25},
                 //new object[numParams] {600, 600, 10.0, 10, 30, 0.8},
                 //new object[numParams] {200, 1000, 10.0, 5, 20, 0.2},
                 //new object[numParams] {500, 650, 5.0, 10, 20, 0.5},
