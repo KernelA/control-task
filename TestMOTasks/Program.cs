@@ -175,13 +175,15 @@
 
             const int numParams = 6;
 
+            var a  = new FWParams()
+
             object[][] parameters =
             {
-                //new object[numParams] {250, 600, 10, 20, 30, 1.1},
-                new object[numParams] {300, 700, 20, 8, 15, 0.025},
-                new object[numParams] {300, 1000, 25, 8, 17, 0.05},
-                new object[numParams] {400, 900, 15, 8, 12, 0.1},
-                new object[numParams] {350, 750, 20, 10, 19, 0.15}
+                new object[numParams] {300, 500, 5, 5, 20, 0.1},
+                new object[numParams] {300, 500, 5, 5, 20, 0.2},
+                new object[numParams] {300, 500, 5, 5, 20, 0.5},
+                new object[numParams] {300, 500, 5, 5, 20, 1.9},
+                new object[numParams] {300, 500, 5, 5, 20, 1.2}
             };
 
             string pathToXml = Path.Combine(PathToOutDir, $"{Problem.Name}_res.xml");
