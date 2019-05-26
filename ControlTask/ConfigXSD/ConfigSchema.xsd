@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ConfigSchema"
+    targetNamespace="experiments/moconfig"
+    elementFormDefault="qualified"
+    xmlns="experiments/moconfig"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <xs:simpleType name="PositiveDoubleType">
+    <xs:restriction base="xs:double">
+      <xs:minExclusive value="0"></xs:minExclusive>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="MOFWParamType">
+    <xs:attribute name="NP" type="xs:positiveInteger" use="required"></xs:attribute>
+    <xs:attribute name="Imax" type="xs:positiveInteger" use="required"></xs:attribute>
+    <xs:attribute name="Smin" type="xs:positiveInteger" use="required"></xs:attribute>
+    <xs:attribute name="Smax" type="xs:positiveInteger" use="required"></xs:attribute>
+    <xs:attribute name="M" type="PositiveDoubleType" use="required"></xs:attribute>
+    <xs:attribute name="Amax" type="PositiveDoubleType" use="required"></xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="ControlBoundType">
+    <xs:attribute name="Lower" type="xs:double" use="required"></xs:attribute>
+    <xs:attribute name="Upper" type="xs:double" use="required"></xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="MOFWParamsType">
+    <xs:sequence maxOccurs="unbounded">
+      <xs:element name="MOFWParam" type="MOFWParamType"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="MOExpType">
+    <xs:sequence>
+      <xs:element name="U1Bounds" type="ControlBoundType"></xs:element>
+      <xs:element name="U2Bounds" type="ControlBoundType"></xs:element>
+      <xs:element name="MOFWParams" type="MOFWParamsType"></xs:element>
+    </xs:sequence>
+    <xs:attribute name="NSwitches" type="xs:positiveInteger"></xs:attribute>
+    <xs:attribute name="TMax" type="xs:double"></xs:attribute>
+    <xs:attribute name="X10" type="xs:double"></xs:attribute>
+    <xs:attribute name="X20" type="xs:double"></xs:attribute>
+    <xs:attribute name="NSteps" type="xs:positiveInteger"></xs:attribute>
+    <xs:attribute name="Lambda1" type="PositiveDoubleType"></xs:attribute>
+    <xs:attribute name="Lambda2" type="PositiveDoubleType"></xs:attribute>
+    <xs:attribute name="Lambda3" type="PositiveDoubleType"></xs:attribute>
+    <xs:attribute name="Lambda4" type="PositiveDoubleType"></xs:attribute>
+    <xs:attribute name="TotalRun" type="xs:positiveInteger"></xs:attribute>
+  </xs:complexType>
+
+  <xs:complexType name="ExperimentsType">
+    <xs:sequence maxOccurs="unbounded">
+      <xs:element name="MOExp" type="MOExpType"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="MOControlExpsType">
+    <xs:sequence>
+      <xs:element name="MOExperiments" type="ExperimentsType"></xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="MOControlExperiments" type="MOControlExpsType"></xs:element>
+</xs:schema>
