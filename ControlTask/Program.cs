@@ -1,4 +1,6 @@
-﻿namespace ControlTask
+﻿// This is an open source non-commercial project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+namespace ControlTask
 {
     using System;
     using System.Collections.Generic;
@@ -520,9 +522,11 @@
 
             XmlSchema schema = null;
 
+            string baseDir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location); ;
+
             try
             {
-                schema = LoadXsdSchema(Path.Combine("ConfigXSD", "ConfigSchema.xsd"));
+                schema = LoadXsdSchema(Path.Combine(baseDir, "ConfigXSD", "ConfigSchema.xsd"));
             }
             catch (XmlSchemaException exc)
             {
