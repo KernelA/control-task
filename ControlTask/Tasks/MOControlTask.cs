@@ -145,7 +145,7 @@
             _lambda3 = lambda3;
             _lambda4 = lambda4;
 
-            double step = (double)TMax / N;
+            _step = (double)TMax / N;
 
             double[] valueofT = new double[N + 1];
 
@@ -153,6 +153,7 @@
             {
                 valueofT[i] = i * _step;
             }
+           
 
             _ode = new TargetODE(x10, x20, TMax, valueofT, NumSteps);
             _targetValues = new double[OBJ_COUNT];
