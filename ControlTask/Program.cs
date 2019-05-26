@@ -107,23 +107,29 @@
             Optimize<BBBCOptimizer, BBBCParams>(problem, opt, paramteters, doc, bbbcElem, logger, MaxRun);
         }
 
-        private static void CollectMOResults(IReadOnlyCollection<TaskInfo> Tasks)
+        private static void CollectMOResults(IReadOnlyCollection<ProblemInfo> Tasks)
         {
             _logger.Info("Collecting of results");
 
-            foreach (var taskInfo in Tasks)
+            foreach (var group in Tasks.GroupBy(task => task.BaseDir))
             {
-                string pathToFile = Path.Combine(taskInfo.PathToDir, Path.GetDirectoryName(taskInfo.PathToDir) + ".xml");
+                DirectoryInfo directory = new DirectoryInfo(group.Key);
 
-                if (!File.Exists(pathToFile))
+                _logger.Info($"Collecting from '{directory.FullName}'");
+
+                string fileName = directory.Name + ".xml";
+                string pathToFile = Path.Combine(directory.FullName, fileName);
+
+                bool isFirstProblem = true;
+
+                using (XmlWriter writer = XmlWriter.Create(pathToFile))
                 {
-                    _logger.Info($"Collecting from '{taskInfo.PathToDir}'");
+                    writer.WriteStartDocument();
+                    writer.WriteStartElement("Problem");
 
-                    using (XmlWriter writer = XmlWriter.Create(pathToFile + ".xml"))
+                    foreach (var taskInfo in group)
                     {
-                        writer.WriteStartDocument();
-                        writer.WriteStartElement("Problem");
-
+                        if (isFirstProblem)
                         {
                             var problemDesc = new Dictionary<string, string>
                             {
@@ -145,28 +151,31 @@
                             {
                                 writer.WriteAttributeString(name.Key, name.Value);
                             }
+
+                            isFirstProblem = false;
                         }
 
                         writer.WriteStartElement("MOFW");
 
-                        foreach (var file in Directory.EnumerateFiles(taskInfo.PathToDir, "part*.xml"))
+                        _logger.Info($"Collecting from '{taskInfo.FileName}' to '{pathToFile}'");
+
+                        using (XmlReader reader = XmlReader.Create(taskInfo.FileName))
                         {
-                            _logger.Info($"Collecting from '{file}' to '{pathToFile}'");
-                            using (XmlReader reader = XmlReader.Create(file))
-                            {
-                                writer.WriteNode(reader, false);
-                            }
-
-                            File.Delete(file);
-                            _logger.Info($"A temporary file deleted: '{file}'");
+                            writer.WriteNode(reader, false);
                         }
-
-                        writer.WriteEndElement();
-                        writer.WriteEndElement();
                     }
+
+                    writer.WriteEndElement();
+                    writer.WriteEndElement();
                 }
+
+                string newName = Path.Combine(directory.Parent.FullName, fileName);
+                File.Move(pathToFile, newName);
+                directory.Delete(true);
+                _logger.Info($"Temporary directory deleted: '{directory.FullName}'");
             }
         }
+
 
         private static TParams CreateParams<TParams>(object[] parameters)
         {
@@ -541,7 +550,7 @@
             return 0;
         }
 
-        private static void RunMOExp(TaskInfo Exp, ParallelLoopState State)
+        private static void RunMOExp(ProblemInfo Exp, ParallelLoopState State)
         {
             MappedDiagnosticsContext.Set("id", $"_{Thread.CurrentThread.ManagedThreadId}_");
             MappedDiagnosticsContext.Set("num", Exp.NumExp);
@@ -553,7 +562,7 @@
 
             _logger.Info($"Start solving experiment. Number is {Exp.NumExp}");
 
-            string pathToFile = Path.Combine(Exp.PathToDir, $"part_{Exp.NumExp}.xml");
+            string pathToFile = Exp.FileName;
 
             using (XmlWriter writer = XmlWriter.Create(pathToFile, xmlSettings))
             {
@@ -566,13 +575,13 @@
 
         private static void RunMOExps(MOControlExperiments Exps, string PathToDir)
         {
-            var exps = TaskInfo.CreateTasks(Exps, PathToDir);
+            var exps = ProblemInfo.CreateTasks(Exps, PathToDir);
 
             foreach (var exp in exps)
             {
-                if (!Directory.Exists(exp.PathToDir))
+                if (!Directory.Exists(exp.BaseDir))
                 {
-                    Directory.CreateDirectory(exp.PathToDir);
+                    Directory.CreateDirectory(exp.BaseDir);
                 }
             }
 
