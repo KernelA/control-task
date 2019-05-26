@@ -70,7 +70,7 @@
                 _valueofT[i] = i * _step;
             }
 
-            _ode = new TargetODE(x10, x20, _Tmax, _valueofT);
+            _ode = new TargetODE(x10, x20, _Tmax, _valueofT, 251);
         }
 
         public abstract double TargetFunction(IReadOnlyList<double> Point);

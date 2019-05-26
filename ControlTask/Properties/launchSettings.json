@@ -2,7 +2,7 @@
   "profiles": {
     "ControlTask": {
       "commandName": "Project",
-      "commandLineArgs": "-r 5 -b -10 10 -i 0.05 0.1 -s 8 10 15 -t 1.5  --task-type I12 -o \"C:\\Users\\ALEX K\\Desktop\\Master_task\\ControlTask\\ControlTask\\bin\\Release\\netcoreapp2.1\\Res\""
+      "commandLineArgs": "-c oo.xml -o Res"
     }
   }
 }
